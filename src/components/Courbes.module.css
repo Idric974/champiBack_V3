@@ -1,0 +1,60 @@
+.box {
+  width: 100%;
+  height: 100%;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.boxTab {
+  /* border: solid red 1px; */
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-around;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.tabOn {
+  width: 100%;
+  height: 50px;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #e59500;
+  color: white;
+  font-size: 2.5rem;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.tabOff {
+  width: 100%;
+  height: 50px;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #146ec2;
+  color: white;
+  font-size: 2.5rem;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.tab:hover {
+  /* border: solid red 1px; */
+  color: #146ec2;
+  font-weight: bolder;
+}
+
+.boxBody {
+  width: 98%;
+  height: 500px;
+  border: solid black 1px;
+}

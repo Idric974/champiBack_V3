@@ -1,0 +1,6 @@
+.box {
+  /* border: solid blue 2px; */
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}

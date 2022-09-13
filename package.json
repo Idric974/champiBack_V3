@@ -1,0 +1,48 @@
+{
+  "name": "champiback_v3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "SET NODE_ENV=developement & nodemon server.js",
+    "build": "next build",
+    "start": "concurrently -n ' Serveur Back , Cron Tab ' -c ' green' \" nodemon server.js \" \" node /home/pi/Desktop/champiBack_V3/cronTab.js \"   ",
+    "✔️_sandBox": " node /home/pi/Desktop/champiBack_V2/gestion/outils/sandBox.js",
+    "✔️_gestionAir": " node /home/pi/Desktop/champiBack_V2/gestion/gestionAir/gestionAir.js",
+    "✔️_gestionHum": " node /home/pi/Desktop/champiBack_V2/gestion/gestionHum/gestionHum.js",
+    "✔️_gestionCo2": " node /home/pi/Desktop/champiBack_V2/gestion/gestionCo2/gestionCo2.js",
+    "⚡_AfficherTable": " node /home/pi/Desktop/champiBack_V2/SQL/lireBaseDeDonnee/afficherTable.js ",
+    "⚡_MiseAJourTable": " node /home/pi/Desktop/champiBack_V2/SQL/miseAJourBaseDeDonnee/miseAJourTable.js",
+    "⚡_AfficherListeTable": " node /home/pi/Desktop/champiBack_V2/SQL/lireBaseDeDonnee/afficherListeTable.js",
+    "⚡_AfficherListeBase": " node /home/pi/Desktop/champiBack_V2/SQL/lireBaseDeDonnee/afficherListeBase.js",
+    "⚡_CreerTable": " node /home/pi/Desktop/champiBack_V2/SQL/creerBaseDeDonnee/creerTable.js",
+    "⚡_SupprimerTable": " node /home/pi/Desktop/champiBack_V2/SQL/supprimerBaseDeDonnee/supprimerTable.js",
+    "📩_getSms": " node /home/pi/Desktop/champiBack_V2/tools/getSMS.js",
+    "📩_postSms": " node /home/pi/Desktop/champiBack_V2/tools/postSMS.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "concurrently": "^7.4.0",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.5",
+    "express": "^4.18.1",
+    "gpio": "^0.2.10",
+    "mcp-spi-adc": "^3.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "next": "12.2.5",
+    "node-schedule": "^2.1.0",
+    "nodemon": "^2.0.19",
+    "react": "18.2.0",
+    "react-dayjs": "^0.3.2",
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.1",
+    "sequelize": "^6.21.6"
+  },
+  "devDependencies": {
+    "eslint": "8.23.0",
+    "eslint-config-next": "12.2.5"
+  }
+}

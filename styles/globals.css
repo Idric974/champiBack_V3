@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+:root {
+  --couleur1: green;
+  --shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  --bgColor: #373964;
+  --Primary: #361fdb;
+  --Secondary: #f44611;
+  --grisClaire: #f5e9e2;
+  --Noire: #040f16;
+  --police: @import
+    url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+  --fonte: 'Russo One', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  font-family: 'Montserrat', sans-serif;
+  color: #1f2527;
+}
+
+body {
+  line-height: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+}
+
+h5 {
+  font-size: 1.2rem;
+}
+
+h6 {
+  font-size: 1.2rem;
+}
+
+p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+/* Réinitialisation du rôle d'affichage HTML5 pour les navigateurs plus anciens */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a:hover {
+  font-weight: bolder;
+}
+
+a {
+  cursor: pointer;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+Link {
+  cursor: pointer;
+}
+
+/**➖➖➖➖➖ Input ➖➖➖➖➖**/
+
+button {
+  width: 90%;
+  height: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 20px 0px 10px 0px;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+button:hover {
+  box-shadow: 0px 0px 5px 1px var(--Primary);
+  border-radius: 5px;
+  border: hidden;
+  border: 0;
+  font-weight: bold;
+  color: var(--Primary);
+}
+
+/**➖➖➖➖➖ Input ➖➖➖➖➖**/
+
+input {
+  width: 98%;
+  height: 50px;
+  border: none;
+  border-bottom: solid black 1px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1.5rem;
+  padding-left: 10px;
+  margin: 20px 0px 10px 0px;
+}
+
+input:focus {
+  /* background-color: var(--grisClaire); */
+  outline: none;
+  border: 0;
+}
+
+input:hover {
+  box-shadow: 0px 0px 5px 1px var(--Primary);
+  border-radius: 5px;
+  border: hidden;
+  border: 0;
+}
+
+input::-webkit-input-placeholder {
+  font-size: 2rem;
+}
+
+input::-moz-placeholder {
+  font-size: 2rem;
+}
+
+input:-ms-input-placeholder {
+  font-size: 2rem;
+}
+
+input::-ms-input-placeholder {
+  font-size: 2rem;
+}
+
+input::placeholder {
+  font-size: 1.5rem;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+/**➖➖➖➖➖ Label ➖➖➖➖➖**/
+
+label {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+label::after {
+  margin: 50px 50px 0px 0px;
+}
+
+/* label:hover {
+} */
+
+/* label:focus {
+} */
+
+/**➖➖➖➖➖ Textarea ➖➖➖➖➖**/
+
+textarea {
+  width: 100%;
+  height: auto;
+  border: none;
+  font-size: 1.2rem;
+  padding: 10px 10px 25px 10px;
+  font-family: 'Montserrat', sans-serif;
+  border: solid black 1px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+textarea:focus {
+  outline: none;
+  border: 0;
+}
+
+textarea:hover {
+  box-shadow: 0px 0px 5px 1px var(--Primary);
+  border: hidden;
+  border: 0;
+}
+
+textarea::-webkit-input-placeholder {
+  font-size: 2rem;
+}
+
+textarea::-moz-placeholder {
+  font-size: 2rem;
+}
+
+textarea:-ms-input-placeholder {
+  font-size: 2rem;
+}
+
+textarea::-ms-input-placeholder {
+  font-size: 2rem;
+}
+
+textarea::placeholder {
+  font-size: 1.5rem;
+}

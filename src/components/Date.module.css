@@ -1,0 +1,9 @@
+.box {
+  /* border: solid green 1px; */
+  width: 100%;
+  font-size: 3rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
