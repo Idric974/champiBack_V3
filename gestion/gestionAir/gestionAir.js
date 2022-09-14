@@ -8,6 +8,25 @@ const db = require('../../models');
 
 //! -------------------------------------------------- !
 
+//! variable pour tests.
+
+// let etatRelay;
+
+// let pas;
+// let objectif;
+
+// let etatVanneBDD;
+// let deltaAirPrecedent;
+
+// let temperatureCorrigee = 16.9
+// let consigne = 16;
+// let delta = temperatureCorrigee - consigne;
+// console.log('🟢 TEST | Delta ==> ', delta);
+
+// let difDelta = -0.3;
+
+//! -------------------------------------------------- !
+
 // ! Les fonctions appelées
 
 //? Mise à jour de l'état des relay.
@@ -46,6 +65,10 @@ let miseAjourEtatRelay = () => {
 //! Les fonctions asynchrones.
 
 //? Récupération de la consigne.
+
+let consigne;
+let pas;
+let objectif;
 
 const gestionAirsDataModels = db.gestionAirData;
 
@@ -162,6 +185,9 @@ let recuperationDeEtalonage = () => {
 
 //? Récupération de l'état de la vanne froid.
 
+let etatVanneBDD;
+let deltaAirPrecedent;
+
 const gestionAirModels = db.gestionAir;
 
 let recuperationEtatVanneFroid = () => {
@@ -181,13 +207,20 @@ let recuperationEtatVanneFroid = () => {
                             where: { id: id.maxid },
                         })
                         .then((result) => {
-                            // console.log(result);
+                            // console.log('⭐ Result gestionAirModels ====> ', result);
 
                             etatVanneBDD = result['etatRelay'];
 
                             console.log(
                                 "✅ %c SUCCÈS ==> gestions Air ==> Récupération de l'état de la vanne froid",
                                 'color: green', etatVanneBDD
+                            );
+
+                            deltaAirPrecedent = result['deltaAir'];
+
+                            console.log(
+                                "✅ %c SUCCÈS ==> gestions Air ==> Récupération du delta air",
+                                'color: green', deltaAirPrecedent
                             );
 
                         }).then(() => {
@@ -374,10 +407,10 @@ let getTemperatures = () => {
                         if (err) throw err;
                         listValAir.push(reading.value * 40);
 
-                        console.log(
-                            "✅ %c SUCCÈS ==> gestions Air ==> Mesure de la température Air",
-                            'color: green', listValAir
-                        );
+                        // console.log(
+                        //     "✅ %c SUCCÈS ==> gestions Air ==> Mesure de la température Air",
+                        //     'color: green', listValAir
+                        // );
 
                         if (listValAir.length >= 10) {
                             // console.log('listValAir.length >=10');
@@ -480,8 +513,7 @@ let definitionTemperatureAirCorrigee = () => {
 
 //? Définition du delta.
 
-// let delta;
-let delta = -0.2;
+let delta;
 
 let definitionDuDelta = () => {
     return new Promise((resolve, reject) => {
@@ -522,10 +554,7 @@ let definitionDesActions = () => {
 
             if (delta >= 1.5) {
 
-                console.log(
-                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= 1.5",
-                    'color: green'
-                );
+                console.log('🔺 Action sélectionnée ==> gestions Air ==> delta >= 1.5');
 
                 //* Actions.
 
@@ -592,7 +621,7 @@ let definitionDesActions = () => {
                 let resolveAction = async () => {
 
                     console.log(
-                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= 1.5 | Fin des actions",
+                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= 1.5 | Fin des actions ",
                         'color: green'
                     );
 
@@ -626,10 +655,7 @@ let definitionDesActions = () => {
 
                 //! Delta = 0.
 
-                console.log(
-                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta === 0",
-                    'color: green'
-                );
+                console.log('🔺 Action sélectionnée ==> gestions Air ==> delta === 0');
 
                 //* Actions.
                 let fermetureTotalVanne40 = () => {
@@ -639,7 +665,7 @@ let definitionDesActions = () => {
                             const relay_23_OFF = new Gpio(23, 'in');
 
                             console.log(
-                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta === 0 | Lancement fermeture total de la vanne.",
+                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta === 0 | Lancement fermeture total de la vanne pour 40 secondes.",
                                 'color: green'
                             );
 
@@ -651,7 +677,7 @@ let definitionDesActions = () => {
 
                         } else {
 
-                            console.log("❌ %c ERREUR =====> Definition des actions delta === 0 | Lancement fermeture total de la vanne.",
+                            console.log("❌ %c ERREUR =====> Definition des actions delta === 0 | Lancement fermeture total de la vanne  pour 40 secondes.",
                                 'color: orange');
 
                             reject();
@@ -668,7 +694,7 @@ let definitionDesActions = () => {
                                 new Gpio(23, 'out');
 
                                 console.log(
-                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta === 0 | Arrêt fermeture total de la vanne.",
+                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta === 0 | Arrêt fermeture total de la vanne  pour 40 secondes.",
                                     'color: green'
                                 );
 
@@ -682,7 +708,7 @@ let definitionDesActions = () => {
 
                         } else {
 
-                            console.log("❌ %c ERREUR =====> Definition des actions delta === 0 | Arrêt fermeture total de la vanne.",
+                            console.log("❌ %c ERREUR =====> Definition des actions delta === 0 | Arrêt fermeture total de la vanne pour 40 secondes.",
                                 'color: orange');
 
                             reject();
@@ -730,7 +756,7 @@ let definitionDesActions = () => {
                                 );
 
                                 actionRelay = 0;
-                                etatRelay = 37, 5;
+                                etatRelay = 37.5;
                                 miseAjourEtatRelay();
 
                                 resolve();
@@ -784,10 +810,8 @@ let definitionDesActions = () => {
 
                 //! Delta <= -0.3
 
-                console.log(
-                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3",
-                    'color: green'
-                );
+                console.log('🔺 Action sélectionnée ==> gestions Air ==> delta <= -0.3');
+
 
                 //* Actions.
 
@@ -798,7 +822,7 @@ let definitionDesActions = () => {
                             new Gpio(23, 'in');
 
                             console.log(
-                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3 | Début fermeture du froid",
+                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3 | Début fermeture du froid pour 40 secondes.",
                                 'color: green'
                             );
 
@@ -810,7 +834,7 @@ let definitionDesActions = () => {
 
                         } else {
 
-                            console.log("❌ %c ERREUR =====> Definition des actions delta <= -0.3 | Début fermeture du froid",
+                            console.log("❌ %c ERREUR =====> Definition des actions delta <= -0.3 | Début fermeture du froid pour 40 secondes.",
                                 'color: orange');
 
                             reject();
@@ -829,7 +853,7 @@ let definitionDesActions = () => {
                                 //
                                 const relay_23_OFF = new Gpio(23, 'out');
                                 console.log(
-                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3 | Fin fermeture du froid",
+                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3 | Fin fermeture du froid pour 40 secondes.",
                                     'color: green'
                                 );
 
@@ -843,7 +867,7 @@ let definitionDesActions = () => {
 
                         } else {
 
-                            console.log("❌ %c ERREUR =====> Definition des actions delta <= -0.3 | Fin fermeture du froid",
+                            console.log("❌ %c ERREUR =====> Definition des actions delta <= -0.3 | Fin fermeture du froid pour 40 secondes.",
                                 'color: orange');
 
                             reject();
@@ -854,7 +878,7 @@ let definitionDesActions = () => {
                 let resolveAction = async () => {
 
                     console.log(
-                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= -0.3 | Fin des actions",
+                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= -0.3 | Fin des actions",
                         'color: green'
                     );
 
@@ -888,7 +912,271 @@ let definitionDesActions = () => {
 
                 //! Delta delta > -0.3 && delta < 1.5.
 
-                console.log('delta > -0.3 && delta < 1.5');
+                console.log('🔺 Action sélectionnée ==> gestions Air ==> delta > -0.3 && delta < 1.5');
+
+                //* Action.
+
+                let ouvertureOuFermetureVanne = () => {
+                    return new Promise((resolve, reject) => {
+
+                        let difDelta = deltaAirPrecedent - delta;
+
+                        console.log('⭐ gestions Air ==> Calcule du difDelta : ', difDelta);
+
+                        try {
+                            if (difDelta > 0) {
+
+                                console.log('⭐ gestions Air ==> deltaAirPrecedent - delta | > à 0 | Fermeture vanne ');
+
+                                let fermetureVanne = () => {
+                                    return new Promise((resolve, reject) => {
+                                        if (delta) {
+
+                                            new Gpio(23, 'in');
+
+                                            console.log(
+                                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Début fermeture du froid",
+                                                'color: green'
+                                            );
+
+                                            actionRelay = 1;
+                                            etatRelay = etatRelay;
+                                            miseAjourEtatRelay();
+
+                                            resolve();
+
+                                        } else {
+
+                                            console.log("❌ %c ERREUR =====> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Début fermeture du froid",
+                                                'color: orange');
+
+                                            reject();
+                                        }
+                                    });
+                                }
+
+                                let arretFermetureVanne = () => {
+                                    return new Promise((resolve, reject) => {
+                                        if (delta) {
+                                            //
+                                            let preconisation;
+                                            let preconisationBrut = difDelta / 0.05 * 1000;
+                                            console.log('preconisationBrut :', preconisationBrut);
+
+                                            if (preconisationBrut >= 0) {
+
+                                                preconisation = preconisationBrut;
+                                                console.log('⭐ gestions Air ==> preconisation : ', preconisation);
+
+                                            } else {
+
+                                                preconisation = preconisationBrut * -1;
+                                                console.log('⭐ gestions Air ==> preconisation : ', preconisation);
+
+                                            }
+
+
+                                            setTimeout(() => {
+                                                //
+                                                const relay_23_OFF = new Gpio(23, 'out');
+                                                console.log(
+                                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Fin fermeture du froid",
+                                                    'color: green'
+                                                );
+
+                                                actionRelay = 0;
+                                                etatRelay = preconisation / 40000 * 100;
+                                                miseAjourEtatRelay();
+
+                                                resolve();
+                                                //
+                                            }, preconisation);
+
+                                        } else {
+
+                                            console.log("❌ %c ERREUR =====> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Fin fermeture du froid",
+                                                'color: orange');
+
+                                            reject();
+                                        }
+                                    });
+                                }
+
+                                let resolveAction = async () => {
+
+                                    console.log(
+                                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= -0.3 | Fin Action sélectionnée",
+                                        'color: green'
+                                    );
+
+                                    resolve();
+
+                                }
+
+                                let handleMyPromise = async () => {
+
+                                    try {
+
+                                        await fermetureVanne();
+                                        await arretFermetureVanne();
+                                        await resolveAction();
+
+                                    }
+                                    catch (err) {
+                                        console.log('🔺 Erreur :', err);
+                                    }
+                                };
+
+                                handleMyPromise();
+
+                            } else if (difDelta < 0) {
+
+                                console.log('⭐ deltaAirPrecedent - delta | < à 0 | Ouverture vanne ');
+
+                                let ouvertureVanne = () => {
+                                    return new Promise((resolve, reject) => {
+                                        if (delta) {
+
+                                            new Gpio(23, 'out');
+
+                                            console.log(
+                                                "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Début ouverture du froid",
+                                                'color: green'
+                                            );
+
+                                            actionRelay = 1;
+                                            etatRelay = etatRelay;
+                                            miseAjourEtatRelay();
+
+                                            resolve();
+
+                                        } else {
+
+                                            console.log("❌ %c ERREUR =====> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Début ouverture du froid",
+                                                'color: orange');
+
+                                            reject();
+                                        }
+                                    });
+                                }
+
+                                let arretOuvertureVanne = () => {
+                                    return new Promise((resolve, reject) => {
+                                        if (delta) {
+                                            //
+                                            let preconisation;
+                                            let preconisationBrut = (difDelta / 0.05) * 1000;
+                                            console.log('preconisationBrut :', preconisationBrut);
+
+                                            if (preconisationBrut >= 0) {
+
+                                                preconisation = preconisationBrut;
+                                                console.log('⭐ gestions Air ==> preconisation : ', preconisation);
+
+                                            } else {
+
+                                                preconisation = preconisationBrut * -1;
+                                                console.log('⭐ gestions Air ==> preconisation : ', preconisation);
+
+                                            }
+
+                                            setTimeout(() => {
+                                                //
+                                                const relay_23_OFF = new Gpio(23, 'in');
+                                                console.log(
+                                                    "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Fin ouverture du froid",
+                                                    'color: green'
+                                                );
+
+                                                actionRelay = 0;
+                                                etatRelay = preconisation / 40000 * 100;
+                                                miseAjourEtatRelay();
+
+                                                resolve();
+                                                //
+                                            }, preconisation);
+
+                                        } else {
+
+                                            console.log("❌ %c ERREUR =====> Definition des actions delta <= delta > -0.3 && delta < 1.5 | Fin ouverture du froid",
+                                                'color: orange');
+
+                                            reject();
+                                        }
+                                    });
+                                }
+
+                                let resolveAction = async () => {
+
+                                    console.log(
+                                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= -0.3 && delta < 1.5 | Fin Action sélectionnée",
+                                        'color: green'
+                                    );
+
+                                    resolve();
+
+                                }
+
+                                let handleMyPromise = async () => {
+
+                                    try {
+
+                                        await ouvertureVanne();
+                                        await arretOuvertureVanne();
+                                        await resolveAction();
+
+                                    }
+                                    catch (err) {
+                                        console.log('🔺 Erreur -0.3 && delta < 1.5 :', err);
+                                    }
+                                };
+
+                                handleMyPromise();
+
+
+
+                            }
+                        } catch (error) {
+
+                            console.log('error', error);
+
+                            reject();
+                        }
+
+                    });
+                }
+
+                let resolveAction = async () => {
+
+                    console.log(
+                        "✅ %c SUCCÈS ==> gestions Air ==> Definition des actions delta >= -0.3 && delta < 1 | Fin des actions",
+                        'color: green'
+                    );
+
+                    resolve();
+
+                }
+
+                //* --------------------------------------------------
+
+                //* Resolve des promises. 
+
+                let handleMyPromise = async () => {
+
+                    try {
+
+                        await ouvertureOuFermetureVanne();
+                        await resolveAction();
+
+                    }
+                    catch (err) {
+                        console.log('🔺 Erreur :', err);
+                    }
+                };
+
+                handleMyPromise();
+
+                //* --------------------------------------------------
 
             }
 
@@ -979,7 +1267,7 @@ let handleMyPromise = async () => {
 
         await definitionTemperatureAirCorrigee();
 
-        // await definitionDuDelta();
+        await definitionDuDelta();
 
         await definitionDesActions();
 
