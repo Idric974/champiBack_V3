@@ -1,0 +1,401 @@
+.boxAffichageTitle {
+    /* border: solid green 1px; */
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+}
+
+.boxCard {
+    /* border: solid 1px red; */
+    width: 30%;
+    height: 91vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    margin: 3px 0px 3px 0px;
+}
+
+/** ➖➖➖➖➖ boxCardData1 ➖➖➖➖➖ **/
+
+.boxCardData1 {
+    /* border: solid 1px red; */
+    width: 95%;
+    box-shadow: 0px 0px 10px 1px black;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.boxCardDataTitle {
+    /* border: solid 1px green; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px 0px 5px 0px;
+    background-color: #146ec2;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.boxCardDataValue {
+    box-shadow: 0px 0px 10px 1px black;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 2.5rem;
+    border-radius: 10px;
+    margin: 10px 0px 10px 0px;
+    padding: 6px 0px 6px 0px;
+}
+
+.boxCardDataParams {
+    /* border: solid 1px green; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.cardDataParams {
+    /* border: solid 1px yellow; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0px 4px 0px;
+}
+
+.cardDataParamsTitle {
+    /* border: solid 1px blue; */
+    width: 55%;
+    font-size: 1rem;
+    text-align: right;
+}
+
+.boxCardDataItem {
+    /* border: solid 1px blue; */
+    width: 45%;
+    text-align: left;
+    font-size: 1rem;
+    margin-left: 10px;
+    font-weight: bolder;
+}
+
+/** ➖➖➖➖➖ boxCardData2 ➖➖➖➖➖ **/
+
+.boxCardData2 {
+    /* border: solid 1px green; */
+    width: 95%;
+    box-shadow: 0px 0px 10px 1px black;
+    border-radius: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heigtSub {
+    height: 77px;
+}
+
+.boxCardData2Title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px 0px 5px 0px;
+    background-color: #146ec2;
+    color: white;
+    font-size: 1.5rem;
+}
+
+
+.boxCardData2Form {
+    /* border: solid 1px blue; */
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+
+.inputForm {
+    /* border: solid 1px red; */
+    width: 100%;
+}
+
+
+
+.inputBlocForm {
+    /* border: solid yellow 1px; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.lableBlocForm {
+    /* border: solid 1px red; */
+    width: 50%;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.inputBlocBox {
+    width: 25%;
+}
+
+.histoBlocForm {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px black;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+    font-size: 1.5rem;
+}
+
+.validationButtonBox {
+    /* border: solid 1px red; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.validationButton {
+    /* border: solid 1px green; */
+    width: 50%;
+    padding: 5px 10px 5px 10px;
+    background-color: #e59500;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.descenteAirBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px 0px 10px 0px;
+    background-color: #e59500;
+    color: white;
+}
+
+.boutonActivation {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.boutonDeactivation {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.boutonActivation,
+.boutonDeactivation {
+    height: 50px;
+}
+
+.boxCardData2DaysHeures {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 5vh;
+}
+
+.boutonActivation,
+.boutonDeactivation,
+.demarrerCycleButton {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: green;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    box-shadow: 0 6px black;
+}
+
+.boutonDeactivation {
+    background-color: red;
+}
+
+.boutonActivation:hover,
+.boutonDeactivation:hover,
+.demarrerCycleButton:hover {
+    box-shadow: 0 4px black;
+    top: 2px;
+    color: white;
+}
+
+.boutonActivation:active,
+.boutonDeactivation:active,
+.demarrerCycleButton:active {
+    box-shadow: 0 0px black;
+    top: 6px;
+    color: white;
+}
+
+/** bouton valve **/
+
+
+.menu {
+    /* border: solid 1px red; */
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+.switchValve {
+    /* border: solid 1px red; */
+    width: 98%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 10px 0px 10px 0px ;
+  }
+  
+  .switchValveBoxOnTitle {
+    font-size: 1.3rem;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+  }
+  
+  .switchValveBoxOn,
+  .switchValveBoxOff {
+    /* border: solid 1px red; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .switchValveVA {
+    width: 95%;
+    align-items: center;
+    appearance: none;
+    background-color: var(--orangeClic974);
+    border-radius: 5px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 1.5rem;
+  }
+  
+  .switchValveVB {
+    width: 95%;
+    align-items: center;
+    appearance: none;
+    background-color: green;
+    border-radius: 5px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 1.5rem;
+  }
+  
+  .switchValveVA:focus,
+  .switchValveVB:focus {
+    box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  }
+  
+  .switchValveVA:active,
+  .switchValveVB:active {
+    box-shadow: #d6d6e7 0 3px 7px inset;
+    transform: translateY(2px);
+  }
+  
+  /** --------------------------- */
