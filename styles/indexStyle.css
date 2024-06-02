@@ -11,7 +11,7 @@
 }
 
 .boxCard {
-    /* border: solid 1px red; */
+/* background-color: red; */
     width: 30%;
     height: 91vh;
     display: flex;
@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: center;
     justify-content: space-between;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     margin: 3px 0px 3px 0px;
 }
 
@@ -28,8 +28,8 @@
 .boxCardData1 {
     /* border: solid 1px red; */
     width: 95%;
-    box-shadow: 0px 0px 10px 1px black;
-    border-radius: 10px;
+    box-shadow: 0px 0px 4px 1px black;
+    border-radius: var(--border-radius);
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -43,7 +43,7 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     padding: 5px 0px 5px 0px;
     background-color: #146ec2;
     color: white;
@@ -51,14 +51,14 @@
 }
 
 .boxCardDataValue {
-    box-shadow: 0px 0px 10px 1px black;
+    /* box-shadow: 0px 0px 10px 1px black; */
     width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     font-size: 2.5rem;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     margin: 10px 0px 10px 0px;
     padding: 6px 0px 6px 0px;
 }
@@ -105,7 +105,7 @@
     /* border: solid 1px green; */
     width: 95%;
     box-shadow: 0px 0px 10px 1px black;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -121,7 +121,7 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     padding: 5px 0px 5px 0px;
     background-color: #146ec2;
     color: white;
@@ -177,7 +177,7 @@
     align-items: center;
     justify-content: center;
     border: solid 1px black;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 10px 10px 10px 10px;
     font-size: 1.5rem;
 }
@@ -196,7 +196,7 @@
     width: 50%;
     padding: 5px 10px 5px 10px;
     background-color: #e59500;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     color: white;
     font-size: 0.8rem;
 }
@@ -208,7 +208,7 @@
     align-items: center;
     text-align: center;
     font-size: 1rem;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 5px 5px;
     padding: 10px 0px 10px 0px;
     background-color: #e59500;
     color: white;
@@ -254,7 +254,7 @@
     margin-left: auto;
     margin-right: auto;
     background-color: green;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     border: none;
     cursor: pointer;
     outline: none;
@@ -327,7 +327,7 @@
     align-items: center;
     appearance: none;
     background-color: var(--orangeClic974);
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     border-width: 0;
     box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
       rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
@@ -359,7 +359,7 @@
     align-items: center;
     appearance: none;
     background-color: green;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     border-width: 0;
     box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
       rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;

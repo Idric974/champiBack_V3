@@ -33,20 +33,20 @@ const Sequelize = require('sequelize');
 
 //* Data.
 
-const miseAJourGestionAirData = db.gestionAirData;
+// const miseAJourGestionAirData = db.gestionAirData;
 
-const newDataCo2 = miseAJourGestionAirData
-  .create({
-    consigneAir: 18,
-    pasAir: 15,
-    objectifAir: 11,
-  })
-  .then((result) => {
-    console.log('Table mise à jour');
-  })
-  .catch((error) => {
-    console.log('Table non mise à jour', error);
-  });
+// const newDataCo2 = miseAJourGestionAirData
+//   .create({
+//     consigneAir: 18,
+//     pasAir: 15,
+//     objectifAir: 11,
+//   })
+//   .then((result) => {
+//     console.log('Table mise à jour');
+//   })
+//   .catch((error) => {
+//     console.log('Table non mise à jour', error);
+//   });
 
 //* -------------------------*
 
@@ -309,15 +309,19 @@ const newDataCo2 = miseAJourGestionAirData
 
 //* Vannes.
 
-// const miseAJourVannes = db.gestionAirVannes;
+const miseAJourVannes = db.gestionAirVannes;
 
-// const newMAJ = miseAJourVannes
-//   .create({
-//     vanneActive: 'a',
-//   })
-//   .then((result) => {
-//     console.log('Table gestion vannes', result);
-//   })
-//   .catch((error) => {
-//     console.log('Table gestion vannes non mise à jour', error);
-//   });
+const newMAJ = miseAJourVannes
+  .create({
+    vanneActive: 'a',
+  })
+  .then((result) => {
+    console.log('Table gestion vannes', result);
+  })
+  .catch((error) => {
+    console.log('Table gestion vannes non mise à jour', error);
+  });
+
+  //* -------------------------*
+
+//! --------------------------------------------------
