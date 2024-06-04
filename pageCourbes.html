@@ -20,14 +20,41 @@
     <!-- ➖➖➖➖➖➖ 🟢 NAVIGATION 🟢 ➖➖➖➖➖➖ -->
 
     <div class="boxMenu">
-      <div class="boxMenuTitle">Menu</div>
-      <button class="boutonAccueil"><a href="/">Accueil</a></button>
-      <button class="boutonAccueil">
-        <a href="/pageRelay.html">Relays</a>
-      </button>
-      <button class="boutonAccueil">
-        <a href="/pageCourbes.html">Courbe</a>
-      </button>
+      <div class="boxMenuBlock1">
+        <!-- Le Menu -->
+        <nav class="menu">
+          <div class="version">Champi Back V3</div>
+          <!-- <p class="boxMenuTitle">Menu</p> -->
+          <ul class="menuButton">
+            <a class="menuButtonItems" href="/"><li>Accueil</li></a>
+            <a class="menuButtonItems" href="/pageRelay.html"><li>Relays</li></a>
+            <a class="menuButtonItems" href="/pageCourbes.html"><li>Courbe</li></a>
+          </ul>
+        </nav>
+
+        <!-- Le control des vannes -->
+
+        <div class="boxVanne">
+          <div class="switchValve">
+            <div class="switchValveBoxOn">
+              <p class="switchValveBoxOnTitle">Vanne A</p>
+              <button class="switchValveVA" id="switchValveA">ON</button>
+            </div>
+          </div>
+
+          <div class="switchValveBoxOff">
+            <p class="switchValveBoxOnTitle">Vanne B</p>
+            <button class="switchValveVB" id="switchValveB">OFF</button>
+          </div>
+        </div>
+
+        <!-- <div class="dateEtHeure">
+          <p class="dateEtHeureHeure" id="afficheHeure">-</p>
+          <p class="dateEtHeureDate" id="afficheDate2">-</p>
+        </div> -->
+     
+      </div>
+
     </div>
 
     <!-- ➖➖➖➖➖➖ ❌ FIN NAVIGATION ❌ ➖➖➖➖➖➖ -->

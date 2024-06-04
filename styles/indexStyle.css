@@ -8,36 +8,34 @@
     justify-content: center;
     font-size: 2rem;
     color: white;
-}
-
-.boxCard {
-/* background-color: red; */
+  }
+  
+  .boxCard {
+    /* background-color: red; */
     width: 30%;
     height: 91vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    justify-content: space-between;
     border-radius: var(--border-radius);
     margin: 3px 0px 3px 0px;
-}
-
-/** ➖➖➖➖➖ boxCardData1 ➖➖➖➖➖ **/
-
-.boxCardData1 {
+  }
+  
+  /** ➖➖➖➖➖ boxCardData1 ➖➖➖➖➖ **/
+  
+  .boxCardData1 {
     /* border: solid 1px red; */
     width: 95%;
-    box-shadow: 0px 0px 4px 1px black;
+    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
-}
-
-.boxCardDataTitle {
+    margin: 10px 0px 10px 0px;
+  }
+  
+  .boxCardDataTitle {
     /* border: solid 1px green; */
     width: 100%;
     display: flex;
@@ -45,12 +43,12 @@
     text-align: center;
     border-radius: 5px 5px 0px 0px;
     padding: 5px 0px 5px 0px;
-    background-color: #146ec2;
+    background-color: var(--grisAnthracite);
     color: white;
     font-size: 1.5rem;
-}
-
-.boxCardDataValue {
+  }
+  
+  .boxCardDataValue {
     /* box-shadow: 0px 0px 10px 1px black; */
     width: 95%;
     display: flex;
@@ -61,9 +59,9 @@
     border-radius: var(--border-radius);
     margin: 10px 0px 10px 0px;
     padding: 6px 0px 6px 0px;
-}
-
-.boxCardDataParams {
+  }
+  
+  .boxCardDataParams {
     /* border: solid 1px green; */
     width: 100%;
     display: flex;
@@ -71,9 +69,9 @@
     align-items: center;
     text-align: center;
     font-size: 1.5rem;
-}
-
-.cardDataParams {
+  }
+  
+  .cardDataParams {
     /* border: solid 1px yellow; */
     width: 100%;
     display: flex;
@@ -81,73 +79,68 @@
     align-items: center;
     justify-content: center;
     padding: 4px 0px 4px 0px;
-}
-
-.cardDataParamsTitle {
+  }
+  
+  .cardDataParamsTitle {
     /* border: solid 1px blue; */
     width: 55%;
     font-size: 1rem;
     text-align: right;
-}
-
-.boxCardDataItem {
+  }
+  
+  .boxCardDataItem {
     /* border: solid 1px blue; */
     width: 45%;
     text-align: left;
     font-size: 1rem;
     margin-left: 10px;
     font-weight: bolder;
-}
-
-/** ➖➖➖➖➖ boxCardData2 ➖➖➖➖➖ **/
-
-.boxCardData2 {
+  }
+  
+  /** ➖➖➖➖➖ boxCardData2 ➖➖➖➖➖ **/
+  
+  .boxCardData2 {
     /* border: solid 1px green; */
     width: 95%;
-    box-shadow: 0px 0px 10px 1px black;
+    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.heigtSub {
+  }
+  
+  .heigtSub {
     height: 77px;
-}
-
-.boxCardData2Title {
+  }
+  
+  .boxCardData2Title {
     width: 100%;
     display: flex;
     flex-direction: column;
     text-align: center;
     border-radius: 5px 5px 0px 0px;
     padding: 5px 0px 5px 0px;
-    background-color: #146ec2;
+    background-color: var(--grisAnthracite);
     color: white;
     font-size: 1.5rem;
-}
-
-
-.boxCardData2Form {
+  }
+  
+  .boxCardData2Form {
     /* border: solid 1px blue; */
     width: 98%;
     display: flex;
     flex-direction: column;
     text-align: center;
     margin-bottom: 10px;
-}
-
-
-
-.inputForm {
+  }
+  
+  .inputForm {
     /* border: solid 1px red; */
     width: 100%;
-}
-
-
-
-.inputBlocForm {
+  }
+  
+  .inputBlocForm {
     /* border: solid yellow 1px; */
     width: 100%;
     display: flex;
@@ -155,22 +148,22 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-}
-
-.lableBlocForm {
+  }
+  
+  .lableBlocForm {
     /* border: solid 1px red; */
     width: 50%;
     font-size: 1.2rem;
     font-weight: bolder;
     text-align: right;
     padding-right: 20px;
-}
-
-.inputBlocBox {
+  }
+  
+  .inputBlocBox {
     width: 25%;
-}
-
-.histoBlocForm {
+  }
+  
+  .histoBlocForm {
     width: 25%;
     display: flex;
     flex-direction: column;
@@ -180,70 +173,85 @@
     border-radius: var(--border-radius);
     padding: 10px 10px 10px 10px;
     font-size: 1.5rem;
-}
-
-.validationButtonBox {
+  }
+  
+  .validationButtonBox {
     /* border: solid 1px red; */
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-}
-
-.validationButton {
+  }
+  
+  .validationButton {
     /* border: solid 1px green; */
-    width: 50%;
-    padding: 5px 10px 5px 10px;
-    background-color: #e59500;
-    border-radius: var(--border-radius);
-    color: white;
-    font-size: 0.8rem;
-}
-
-.descenteAirBox {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #ff7e31, #f44611);
+  border-radius: var(--border-radius);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  outline: 0;
+  pointer-events: auto;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 50%;
+  z-index: 9;
+  border: 0;
+  transition: box-shadow 0.2s;
+  margin: 5px 0px 5px 0px;
+  font-size: 1.5rem;
+  }
+  
+  .descenteAirBox {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    font-size: 1rem;
+    font-size: 2.0rem;
     border-radius: 0px 0px 5px 5px;
     padding: 10px 0px 10px 0px;
-    background-color: #e59500;
-    color: white;
-}
-
-.boutonActivation {
+    background-color: var(--grisAnthracite);
+    color: var(--orangeClic974);
+  }
+  
+  .boutonActivation {
     width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 10px;
-}
-
-.boutonDeactivation {
+  }
+  
+  .boutonDeactivation {
     width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 10px;
-}
-
-.boutonActivation,
-.boutonDeactivation {
+  }
+  
+  .boutonActivation,
+  .boutonDeactivation {
     height: 50px;
-}
-
-.boxCardData2DaysHeures {
+  }
+  
+  .boxCardData2DaysHeures {
     margin-top: 20px;
     margin-bottom: 20px;
     height: 5vh;
-}
-
-.boutonActivation,
-.boutonDeactivation,
-.demarrerCycleButton {
+  }
+  
+  .boutonActivation,
+  .boutonDeactivation,
+  .demarrerCycleButton {
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -260,142 +268,25 @@
     outline: none;
     position: relative;
     box-shadow: 0 6px black;
-}
-
-.boutonDeactivation {
+  }
+  
+  .boutonDeactivation {
     background-color: red;
-}
-
-.boutonActivation:hover,
-.boutonDeactivation:hover,
-.demarrerCycleButton:hover {
+  }
+  
+  .boutonActivation:hover,
+  .boutonDeactivation:hover,
+  .demarrerCycleButton:hover {
     box-shadow: 0 4px black;
     top: 2px;
     color: white;
-}
-
-.boutonActivation:active,
-.boutonDeactivation:active,
-.demarrerCycleButton:active {
+  }
+  
+  .boutonActivation:active,
+  .boutonDeactivation:active,
+  .demarrerCycleButton:active {
     box-shadow: 0 0px black;
     top: 6px;
     color: white;
-}
-
-/** bouton valve **/
-
-
-.menu {
-    /* border: solid 1px red; */
-    width: 98%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-
-.switchValve {
-    /* border: solid 1px red; */
-    width: 98%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    justify-content: space-between;
-    cursor: pointer;
-    margin: 10px 0px 10px 0px ;
   }
   
-  .switchValveBoxOnTitle {
-    font-size: 1.3rem;
-    padding: 5px 0px 5px 0px;
-    text-align: center;
-  }
-  
-  .switchValveBoxOn,
-  .switchValveBoxOff {
-    /* border: solid 1px red; */
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .switchValveVA {
-    width: 95%;
-    align-items: center;
-    appearance: none;
-    background-color: var(--orangeClic974);
-    border-radius: var(--border-radius);
-    border-width: 0;
-    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
-      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
-    box-sizing: border-box;
-    color: white;
-    cursor: pointer;
-    display: inline-flex;
-    height: 48px;
-    justify-content: center;
-    line-height: 1;
-    list-style: none;
-    overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transition: box-shadow 0.15s, transform 0.15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-    will-change: box-shadow, transform;
-    font-size: 1.5rem;
-  }
-  
-  .switchValveVB {
-    width: 95%;
-    align-items: center;
-    appearance: none;
-    background-color: green;
-    border-radius: var(--border-radius);
-    border-width: 0;
-    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
-      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
-    box-sizing: border-box;
-    color: white;
-    cursor: pointer;
-    display: inline-flex;
-    height: 48px;
-    justify-content: center;
-    line-height: 1;
-    list-style: none;
-    overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transition: box-shadow 0.15s, transform 0.15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-    will-change: box-shadow, transform;
-    font-size: 1.5rem;
-  }
-  
-  .switchValveVA:focus,
-  .switchValveVB:focus {
-    box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
-  }
-  
-  .switchValveVA:active,
-  .switchValveVB:active {
-    box-shadow: #d6d6e7 0 3px 7px inset;
-    transform: translateY(2px);
-  }
-  
-  /** --------------------------- */

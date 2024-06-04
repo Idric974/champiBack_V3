@@ -85,14 +85,13 @@ video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
-  font-family: 'verdana', sans-serif;
+  font-family: inherit;
   color: #1f2527;
 }
 
 body {
   line-height: 1;
 }
-
 
 h1 {
   font-size: 1.5rem;
@@ -140,7 +139,8 @@ section {
 }
 
 ol,
-ul {
+ul,
+li {
   list-style: none;
 }
 
@@ -153,7 +153,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -176,6 +176,7 @@ a:hover {
 
 a {
   cursor: pointer;
+  text-align: center;
 }
 
 a:link {
@@ -186,7 +187,7 @@ input {
   width: 100%;
   border-radius: var(--border-radius);
   cursor: pointer;
-  background-color: #ccc;
+  background-color: var(--couleurDeFond);
   text-align: center;
   font-size: 1rem;
   margin: 5px 2px 5px 2px;
@@ -230,6 +231,31 @@ label {
   font-size: 1.5rem;
 }
 
+button {
+  width: 98%;
+  border-radius: var(--border-radius);
+  padding: 10px 10px 10px 10px;
+  margin: 10px 0px 10px 0px;
+  color: white;
+  background-color: var(--orangeClic974);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px rgb(122, 122, 122);
+}
+
+button a {
+  color: white;
+}
+
+button:active {
+  box-shadow: 0 0px black;
+  top: 2px;
+  color: white;
+  font-size: 1.5rem;
+}
+
 :root {
   --greenColor: #008000;
   --shadow: 0px 0px 5px 0px #373964;
@@ -242,26 +268,222 @@ label {
   --secondaryColor: gold;
   --grisAnthracite: #303030;
   --whiteColor: #ffff;
-  --border-radius : 5px;
+  --border-radius: 5px;
 }
 
 .box {
   /* background-color: red; */
   width: 100%;
   height: 99.9vh;
-  /* border: solid black 1px; */
   display: flex;
   flex-direction: row;
-
 }
 
 .boxMenu {
-background-color: #e9e9e9;
+  background-color: var(--grisAnthracite);
   width: 15%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
+
+.version {
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 20px 0px 20px 0px;
+  padding: 0px 0px 10px 0px ;
+  color: var(--orangeClic974);
+  border-bottom: solid var(--whiteColor) 1px;
+
+}
+
+.boxMenuBlock1 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu {
+  /* border: solid 1px red; */
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/** -------- Boutons Menu -------- **/
+
+.menuButton {
+ /* border: solid 1px red; */
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButtonItems {
+  width: 100%;
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #ff7e31, #f44611);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 98%;
+  z-index: 9;
+  border: 0;
+  transition: box-shadow 0.2s;
+  margin: 5px 0px 5px 0px;
+  font-size: 1.5rem;
+}
+
+.menuButtonItems:hover{
+  background-color: var(--primaryColor)
+ }
+
+.menuButtonItems li {
+  color: var(--whiteColor);
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+/** -------- Boutons Vannes -------- **/
+
+.boxVanne {
+  /* border: solid var(--whiteColor) 1px; */
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0px 0px 0px ;
+  border-radius: var(--border-radius);
+}
+
+.switchValve {
+  /* border: solid 1px red; */
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin: 10px 0px 10px 0px;
+}
+
+.switchValveBoxOnTitle {
+  font-size: 1.3rem;
+  padding: 5px 0px 5px 0px;
+  text-align: center;
+  color: white;
+}
+
+.switchValveBoxOn,
+.switchValveBoxOff {
+  /* border: solid 1px red; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.switchValveVA {
+  width: 95%;
+  align-items: center;
+  appearance: none;
+  background-color: var(--orangeClic974);
+  border-radius: var(--border-radius);
+  border-width: 0;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 1.5rem;
+}
+
+.switchValveVB {
+  width: 95%;
+  align-items: center;
+  appearance: none;
+  background-color: green;
+  border-radius: var(--border-radius);
+  border-width: 0;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 1.5rem;
+}
+
+.switchValveVA:focus,
+.switchValveVB:focus {
+  box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+}
+
+.switchValveVA:active,
+.switchValveVB:active {
+  box-shadow: #d6d6e7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+/** ---------- Box data ---------- **/
 
 .boxAffichageContent {
   /* border: solid 1px green; */
@@ -270,59 +492,15 @@ background-color: #e9e9e9;
   display: flex;
   flex-direction: row;
   justify-content: center;
-
 }
-
-
-
-.boxMenuTitle {
-  width: 100%;
-  height: 7vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  text-align: center;
-  /* padding: 10px 0px 10px 0px ; */
-  background-color: #146ec2;
-  /* border-bottom: solid black 1px; */
-  color: white;
-  margin-bottom: 5px;
-}
-
-.boutonAccueil {
-  width: 90%;
-  border-radius: var(--border-radius);
-  padding: 10px 10px 10px 10px;
-  margin: 10px 0px 10px 0px;
-  color: #ececec;
-  background-color: #e59500;
-  box-shadow: 0px 0px 10px 1px black;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  position: relative;
-  box-shadow: 0 4px rgb(122, 122, 122);
-}
-
-
-
-.boutonAccueil:active {
-  box-shadow: 0 0px black;
-  top: 6px;
-  color: white;
-}
-
-
 
 .boxAffichage {
+  /* background-color: red; */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   /* border: solid black 1px; */
-
 }
 
 .dateBox {
@@ -332,7 +510,7 @@ background-color: #e9e9e9;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #146ec2;
+  background-color: var(--grisAnthracite);
 }
 
 .laDate {
@@ -345,16 +523,33 @@ background-color: #e9e9e9;
   margin: 10px 0px 10px 0px;
   color: white;
   text-align: center;
-
 }
 
-.version {
+/** La date et l'heure **/
+
+.dateEtHeure {
+  background-color: red;
+  width: 98%;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  font-size: 1.8rem;
-  margin: 10px 0px 10px 0px;
-  color: white;
+  border-radius: 5px;
+  padding: 10px 5px 10px 5px;
+  margin-bottom: 5px;
+}
+
+.dateEtHeureHeure {
+  border-radius: 5px;
+  font-size: 3.4rem;
+  color: var(--orangeClic974);
+  text-align: center;
+  margin: 10px 0px 20px 0px ;
+}
+
+.dateEtHeureDate {
+  border-radius: 0px 0px 0px 0px;
+  font-size: 2.5rem;
+  text-align: center;
 }
