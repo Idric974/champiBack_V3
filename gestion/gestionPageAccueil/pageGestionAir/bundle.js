@@ -1,37 +1,37 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 //? switch Valve A/B.
 
-let vanneActive = "A";
+let vanneActive = "vanneHum";
 const switchValve = ()=>{
   document.addEventListener("DOMContentLoaded", function () {
-  const buttonA = document.getElementById("switchValveA");
-  const buttonB = document.getElementById("switchValveB");
+  const buttonHum = document.getElementById("switchHum");
+  const buttonSec = document.getElementById("switchSec");
 
-  function toggleButtonA() {
-    buttonA.innerHTML = "ON";
-    buttonA.style.backgroundColor = "var(--orangeClic974)";
+  function togglebuttonHum() {
+    buttonHum.innerHTML = "ON";
+    buttonHum.style.backgroundColor = "var(--orangeClic974)";
 
-    buttonB.innerHTML = "OFF";
-    buttonB.style.backgroundColor = "var(--greenColor)";
+    buttonSec.innerHTML = "OFF";
+    buttonSec.style.backgroundColor = "var(--greenColor)";
   }
 
-  function toggleButtonB() {
-    buttonB.innerHTML = "ON";
-    buttonB.style.backgroundColor = "var(--orangeClic974)";
+  function togglebuttonSec() {
+    buttonSec.innerHTML = "ON";
+    buttonSec.style.backgroundColor = "var(--orangeClic974)";
 
-    buttonA.innerHTML = "OFF";
-    buttonA.style.backgroundColor = "var(--greenColor)";
+    buttonHum.innerHTML = "OFF";
+    buttonHum.style.backgroundColor = "var(--greenColor)";
   }
 
-  buttonA.addEventListener("click", function () {
-    toggleButtonA();
-    vanneActive = "a";
+  buttonHum.addEventListener("click", function () {
+    togglebuttonHum();
+    vanneActive = "vanneHum";
     console.log("Vanne active", vanneActive);
     saveVanneActive();
   });
-  buttonB.addEventListener("click", function () {
-    toggleButtonB();
-    vanneActive = "b";
+  buttonSec.addEventListener("click", function () {
+    togglebuttonSec();
+    vanneActive = "vanneSec";
     console.log("Vanne active", vanneActive);
     saveVanneActive();
   });
