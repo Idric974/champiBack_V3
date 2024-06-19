@@ -1,11 +1,6 @@
 const mysql = require('mysql');
-
-var db = mysql.createConnection({
-  host: 'localhost',
-  user: 'idric',
-  password: 'Kup33uC4W6',
-  database: 'champyresi',
-});
+const myDataBaseConfig = require("../database/configDataBase");
+const db = mysql.createConnection(myDataBaseConfig);
 
 db.connect(function (err) {
   if (err) throw err;
@@ -16,12 +11,12 @@ db.connect(function (err) {
 
   //* gestion_airs.
 
-  // let sql =
-  //   'CREATE TABLE gestion_airs (id int auto_increment, temperatureAir FLOAT, deltaAir FLOAT, days FLOAT, heures FLOAT, etatRelay FLOAT, actionRelay FLOAT,  consigne varchar(255), valeurAxeX varchar(255), jourDuCycle varchar(255), createdAt DATE, updatedAt DATE, primary key(id))';
-  // db.query(sql, function (err, result) {
-  //   if (err) throw err;
-  //   console.log('Table gestion_airs créé : ', result);
-  // });
+  let sql =
+    'CREATE TABLE gestion_airs (id int auto_increment, temperatureAir FLOAT, deltaAir FLOAT, days FLOAT, heures FLOAT, etatRelay FLOAT, actionRelay FLOAT,  consigne varchar(255), valeurAxeX varchar(255), jourDuCycle varchar(255), createdAt DATE, updatedAt DATE, primary key(id))';
+  db.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log('Table gestion_airs créé : ', result);
+  });
 
   //* -----------------------
 
@@ -190,13 +185,13 @@ db.connect(function (err) {
 
     //! Bouton des contôle des vannes.
 
-  let tableLog =
-    'CREATE TABLE  gestion_vannes (id int auto_increment, vanneActive TEXT, createdAt DATE, updatedAt DATE, primary key(id))';
+  // let tableLog =
+  //   'CREATE TABLE  gestion_vannes (id int auto_increment, vanneActive TEXT, createdAt DATE, updatedAt DATE, primary key(id))';
 
-  db.query(tableLog, function (err, result) {
-    if (err) throw err;
-    console.log('Table gestion des vannes créé : ', result);
-  });
+  // db.query(tableLog, function (err, result) {
+  //   if (err) throw err;
+  //   console.log('Table gestion des vannes créé : ', result);
+  // });
 
   //* -----------------------
 });

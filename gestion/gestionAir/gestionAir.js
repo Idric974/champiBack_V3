@@ -122,14 +122,15 @@ let recuperationDeLaVanneActive = () => {
                             if (vanneActive === "vanneHum") {
                                ouvertureVanne=22;
                                fermetureVanne=23;
-                                console.log("relayVanne ==> ",relayVanne);
+                                console.log("relayVanne ==> ",vanneActive);
                                 resolve();
                              }
                              
                              if (vanneActive === "vanneSec") {
+                                new Gpio(23, 'in');
                                 ouvertureVanne=24;
                                 fermetureVanne=25;
-                                 console.log("relayVanne ==> ",relayVanne);
+                                 console.log("relayVanne ==> ",vanneActive);
                                  resolve();
                               }
                             

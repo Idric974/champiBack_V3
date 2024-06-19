@@ -309,18 +309,18 @@ const Sequelize = require('sequelize');
 
 //* Vannes.
 
-const miseAJourVannes = db.gestionAirVannes;
+// const miseAJourVannes = db.gestionAirVannes;
 
-const newMAJ = miseAJourVannes
-  .create({
-    vanneActive: 'a',
-  })
-  .then((result) => {
-    console.log('Table gestion vannes', result);
-  })
-  .catch((error) => {
-    console.log('Table gestion vannes non mise à jour', error);
-  });
+// const newMAJ = miseAJourVannes
+//   .create({
+//     vanneActive: 'a',
+//   })
+//   .then((result) => {
+//     console.log('Table gestion vannes', result);
+//   })
+//   .catch((error) => {
+//     console.log('Table gestion vannes non mise à jour', error);
+//   });
 
   //* -------------------------*
 

@@ -12,10 +12,10 @@ const sequelize = new Sequelize({
 sequelize
   .authenticate()
   .then(() => {
-    // console.log(
-    //   '\x1b[32m',
-    //   '[ NODE SERVER      ] Connexion à la base de données OK 😃'
-    // );
+    console.log(
+      '\x1b[32m',
+      '[ NODE SERVER      ] Connexion à la base de données OK 😃'
+    );
   })
 
   .catch((err) => {
