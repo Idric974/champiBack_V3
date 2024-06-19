@@ -90,8 +90,10 @@ const sendSMS = (temperatureDuMessage) => {
 
 //? Recupération de la vanne à utiliser.
 
-let relayVanne;
+
 let vanneActive;
+let ouvertureVanne;
+let fermetureVanne;
 
 const gestionAirVannesModels = db.gestionAirVannes;
 
@@ -117,14 +119,16 @@ let recuperationDeLaVanneActive = () => {
                             
                         })
                         .then(() => {
-                            if (vanneActive === "a") {
-                                relayVanne = 23
+                            if (vanneActive === "vanneHum") {
+                               ouvertureVanne=22;
+                               fermetureVanne=23;
                                 console.log("relayVanne ==> ",relayVanne);
                                 resolve();
                              }
                              
-                             if (vanneActive === "b") {
-                                relayVanne = 24
+                             if (vanneActive === "vanneSec") {
+                                ouvertureVanne=24;
+                                fermetureVanne=25;
                                  console.log("relayVanne ==> ",relayVanne);
                                  resolve();
                               }
@@ -645,7 +649,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(relayVanne, 'out');
+                new Gpio(ouvertureVanne, 'out');
 
                 // console.log('Ouverture du froid');
 
@@ -661,7 +665,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(relayVanne, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     // console.log('FIN Ouverture du froid');
 
@@ -682,7 +686,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(relayVanne, 'out');
+                new Gpio(ouvertureVanne, 'out');
 
                 // console.log('Ouverture du froid');
 
@@ -698,7 +702,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(relayVanne, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     // console.log('FIN Ouverture du froid');
 
@@ -719,7 +723,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 5000;
 
-                new Gpio(relayVanne, 'out');
+                new Gpio(ouvertureVanne, 'out');
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -732,7 +736,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(relayVanne, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -752,7 +756,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 2000;
 
-                new Gpio(relayVanne, 'out');
+                new Gpio(ouvertureVanne, 'out');
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -765,7 +769,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(relayVanne, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -784,7 +788,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 1000;
 
-                new Gpio(relayVanne, 'out');
+                new Gpio(ouvertureVanne, 'out');
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -797,7 +801,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(relayVanne, 'in');
+                    new Gpio(fermetureVanne, 'in');
                     // console.log('ouverture  du froid');
                     actionRelay = 0;
                     miseAjourEtatRelay();

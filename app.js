@@ -44,10 +44,10 @@ app.use((req, res, next) => {
 //! --------------------------------------------------
 
 //! Module de connexion à la base de données.
-const db = require('./models');
-db.sequelize.sync({
-  force: false,
-});
+// const db = require('./models');
+// db.sequelize.sync({
+//   force: false,
+// });
 
 //! --------------------------------------------------
 
