@@ -1,12 +1,11 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
-  host: 'localhost',
+  host: '127.0.0.1',
   username: 'idric',
   password: 'Kup33uC4W6',
   database: 'champyresi',
   dialect: 'mysql',
-  host: 'localhost',
   logging: false,
 });
 
