@@ -1,7 +1,6 @@
 //! Les constantes.
 
 const Gpio = require('onoff').Gpio;
-const jaune = '\x1b[33m';
 const sequelize = require('sequelize');
 const Sequelize = require('sequelize');
 const db = require('../../models');
@@ -18,6 +17,7 @@ const numSalle = require('../../configNumSalle');
 let etatRelay;
 
 let miseAjourEtatRelay = () => {
+    let lastId;
     gestionAirModels
         .findOne({
             attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
@@ -51,6 +51,7 @@ const sendSMS = (temperatureDuMessage) => {
     console.log('temperatureDuMessage :', temperatureDuMessage);
 
     //! Url de la master.
+
     const url = 'http://192.168.1.10:5000/api/postSms/postSms';
 
     let date1 = new Date();
@@ -77,7 +78,6 @@ const sendSMS = (temperatureDuMessage) => {
         })
         .catch(function (error) {
             console.log(error);
-
         });
 
 }
@@ -89,7 +89,6 @@ const sendSMS = (temperatureDuMessage) => {
 //! Les fonctions asynchrones.
 
 //? Recupération de la vanne à utiliser.
-
 
 let vanneActive;
 let ouvertureVanne;
@@ -128,12 +127,13 @@ let recuperationDeLaVanneActive = () => {
                              
                              if (vanneActive === "vanneSec") {
                                 new Gpio(23, 'in');
+                  
+                  
                                 ouvertureVanne=24;
                                 fermetureVanne=25;
                                  console.log("relayVanne ==> ",vanneActive);
                                  resolve();
-                              }
-                            
+                              }         
                         });
                 });
         } catch (error) {

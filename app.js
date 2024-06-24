@@ -2,22 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-// Gestion
-const gestionAirRoutes = require('./routes/gestionAirRoutes');
-const gestionHumidite = require('./routes/gestionHumiditeRoutes');
-const gestionCo2 = require('./routes/gestionCo2Routes');
-const gestionCourbe = require('./routes/gestionCourbeRoutes');
-const substratRoutes = require('./routes/gestionSubstratRoutes');
 
-// Logs
-const gestionLogs = require('./routes/logsBackRoutes');
-
-// Outils
-const relayRoutes = require('./routes/relayRoutes');
-const brocheRoutes = require('./routes/broche');
-
-// SMS
-const orderSmsRoutes = require('./routes/gestionSmsOrders');
 
 //! Utilisation de cors pour les connexions
 
@@ -44,10 +29,10 @@ app.use((req, res, next) => {
 //! --------------------------------------------------
 
 //! Module de connexion à la base de données.
-// const db = require('./models');
-// db.sequelize.sync({
-//   force: false,
-// });
+const db = require('./models');
+db.sequelize.sync({
+  force: false,
+});
 
 //! --------------------------------------------------
 
@@ -94,24 +79,32 @@ app.use('/', express.static('/home/pi/Desktop/champiBack_V3/'));
 
 //! Liste des routes.
 
-// Gestion
+const gestionAirRoutes = require('./routes/gestionAirRoutes');
 app.use('/api/gestionAirRoutes', gestionAirRoutes);
+
+const gestionHumidite = require('./routes/gestionHumiditeRoutes');
 app.use('/api/gestionHumiditeRoutes', gestionHumidite);
+
+const gestionCo2 = require('./routes/gestionCo2Routes');
 app.use('/api/gestionCo2Routes', gestionCo2);
+
+const gestionCourbe = require('./routes/gestionCourbeRoutes');
 app.use('/api/gestionCourbeRoutes', gestionCourbe);
+
+const substratRoutes = require('./routes/gestionSubstratRoutes');
 app.use('/api/gestionSubstratRoutes', substratRoutes);
 
-// Logs
+const gestionLogs = require('./routes/logsBackRoutes');
 app.use('/api/logsBackRoutes', gestionLogs);
 
-// Outils
+const relayRoutes = require('./routes/relayRoutes');
 app.use('/api/relayRoutes', relayRoutes);
+
+const brocheRoutes = require('./routes/broche');
 app.use('/api/broche', brocheRoutes);
 
-// SMS.
+const orderSmsRoutes = require('./routes/gestionSmsOrders');
 app.use('/api/postSmsOrderRoute', orderSmsRoutes);
-
-
 
 //! --------------------------------------------------
 

@@ -1,6 +1,7 @@
 //? Afficher la date.
 
-export function afficherDateEtHeure() {
+const afficherDateEtHeure=()=>{  
+
   let dateEtHeure;
 
   function afficherDate() {
@@ -55,7 +56,8 @@ export function afficherDateEtHeure() {
 
 //? Afficher l'heure.
 
-export function afficherHeure() {
+const afficherHeure=()=>{  
+
   let myHeure;
 
   function afficherHeure() {
@@ -81,4 +83,35 @@ export function afficherHeure() {
 
 //? -------------------------------------------------
 
+//? Gestion des boutons SEC et
 
+const gpioOn = () => {
+  fetch('http://localhost:3003/api/relayRoutes/relayOnSecHum/')
+      .then(response => response.text())
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+}
+
+const gpioOff = () => {
+  fetch('http://localhost:3003/api/relayRoutes/relayOffSecHum/')
+      .then(response => response.text())
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+}
+
+
+module.exports = {
+  afficherDateEtHeure,
+  afficherHeure,
+  gpioOn,
+  gpioOff,
+
+}

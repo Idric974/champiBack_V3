@@ -1,74 +1,48 @@
-//! Les constantes.
-
 const mcpadc = require('mcp-spi-adc');
-const jaune = '\x1b[33m';
+const mcpBroche = 1;
+const nbTour = 5;
+const listValAir = [];
 
-//! --------------------------------------------------
-
-//! Les variables.
-
-let mcpBroche = 1;
-let nbTour = 0;
-
-//! --------------------------------------------------
-
-//! Les tableaux.
-
-listValAir = [];
-
-//! --------------------------------------------------
-
-//! Fonction moyenne.
-
-function ArrayAvg(listValAir) {
-  let i = 0,
-    summ = 0,
-    ArrayLen = listValAir.length;
-  while (i < ArrayLen) {
-    summ = summ + listValAir[i++];
-  }
-  return summ / ArrayLen;
+//* Fonction moyenne.
+function calculateAverage(values) {
+  const sum = values.reduce((acc, val) => acc + val, 0);
+  return values.length ? sum / values.length : 0;
 }
 
-//! -------------------------------------------------- !
-
-//! Fonction de test.
-
-let testMCP3008 = () => {
+//* Fonction de test.
+const testMCP3008 = () => {
   return new Promise((resolve) => {
-    // Compteur.
-    let temps = 0;
+    let counter = 0;
 
-    let count = () => {
-      temps = temps++;
-
-      if (temps++ === nbTour) {
-        clearInterval(conteur);
-      }
-
+    const readSensor = () => {
       const tempSensor = mcpadc.open(mcpBroche, { speedHz: 20000 }, (err) => {
         if (err) throw err;
 
         tempSensor.read((err, reading) => {
           if (err) throw err;
           listValAir.push(reading.value * 40);
-          console.log(
-            jaune,
-            '[ GESTION AIR CALCULES  ] listValAir',
-            listValAir
-          );
+          console.log('⭐ Mesure : ', listValAir);
+
+          counter++;
+          if (counter >= nbTour) {
+            clearInterval(interval);
+            resolve(calculateAverage(listValAir));
+          }
         });
       });
     };
 
-    setTimeout(() => {
-      resolve(ArrayAvg(listValAir));
-    }, 11000);
+    const interval = setInterval(readSensor, 1000);
 
-    let conteur = setInterval(count, 1000);
+    setTimeout(() => {
+      clearInterval(interval);
+      resolve(calculateAverage(listValAir));
+    }, (nbTour + 1) * 1000);
   });
 };
 
-testMCP3008();
+testMCP3008().then((average) => {
+  console.log('👉 Valeure moyenne calculée : ', average);
+});
 
-//! -------------------------------------------------- !
+

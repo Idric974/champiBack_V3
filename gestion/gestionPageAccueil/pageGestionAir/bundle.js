@@ -1,4 +1,131 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+//? Afficher la date.
+
+const afficherDateEtHeure=()=>{  
+
+  let dateEtHeure;
+
+  function afficherDate() {
+    let jours = [
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi",
+    ];
+    let mois = [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+    ];
+
+    let maintenant = new Date();
+    let jourSemaine = jours[maintenant.getDay()];
+    let jour = maintenant.getDate();
+    let moisAnnee = mois[maintenant.getMonth()];
+    let annee = maintenant.getFullYear();
+    let heure = maintenant.getHours().toString().padStart(2, "0");
+    let minute = maintenant.getMinutes().toString().padStart(2, "0");
+    let seconde = maintenant.getSeconds().toString().padStart(2, "0");
+
+    dateEtHeure = `${jour}/${moisAnnee}/${annee}`;
+
+    const element = document.getElementById("afficheDate");
+    if (element) {
+      element.innerHTML = dateEtHeure;
+    }
+  }
+
+  setInterval(() => {
+    // console.log(afficherDate());
+    afficherDate();
+  }, 1000);
+}
+
+//? -------------------------------------------------
+
+//? Afficher l'heure.
+
+const afficherHeure=()=>{  
+
+  let myHeure;
+
+  function afficherHeure() {
+    let myDate = new Date();
+    let heure = myDate.getHours().toString().padStart(2, "0");
+    let minute = myDate.getMinutes().toString().padStart(2, "0");
+    let seconde = myDate.getSeconds().toString().padStart(2, "0");
+
+    myHeure = `  ${heure}:${minute}:${seconde}`;
+
+    const element = document.getElementById("afficheHeure");
+    if (element) {
+      element.innerHTML = myHeure;
+    } else {
+      console.log("Pas d'heure");
+    }
+  }
+
+  setInterval(() => {
+    afficherHeure();
+  }, 1000);
+}
+
+//? -------------------------------------------------
+
+//? Gestion des boutons SEC et
+
+const gpioOn = () => {
+  fetch('http://localhost:3003/api/relayRoutes/relayOnSecHum/')
+      .then(response => response.text())
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+}
+
+const gpioOff = () => {
+  fetch('http://localhost:3003/api/relayRoutes/relayOffSecHum/')
+      .then(response => response.text())
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+}
+
+
+module.exports = {
+  afficherDateEtHeure,
+  afficherHeure,
+  gpioOn,
+  gpioOff,
+
+}
+},{}],2:[function(require,module,exports){
+const { gpioOn,gpioOff}= require('../../functions/myfunctions')
+
+
+gpioOn();
+//gpioOff();
+
+
+
+
 //? switch Valve A/B.
 
 let vanneActive = "vanneHum";
@@ -528,4 +655,4 @@ document
 //! -------------------------------------------------
 
 
-},{}]},{},[1]);
+},{"../../functions/myfunctions":1}]},{},[2]);

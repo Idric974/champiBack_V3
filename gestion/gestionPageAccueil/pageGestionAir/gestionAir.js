@@ -1,3 +1,12 @@
+const { gpioOn,gpioOff}= require('../../functions/myfunctions')
+
+
+gpioOn();
+//gpioOff();
+
+
+
+
 //? switch Valve A/B.
 
 let vanneActive = "vanneHum";
