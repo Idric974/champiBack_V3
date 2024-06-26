@@ -1,198 +1,14 @@
-const { gpioOn,gpioOff}= require('../../functions/myfunctions')
+const { 
+        showDate,
+        showTime,
+        switchValve,
+      }= require('../../functions/myfunctions')
 
+showDate();
+showTime();
+switchValve();
 
-gpioOn();
-//gpioOff();
-
-
-
-
-//? switch Valve A/B.
-
-let vanneActive = "vanneHum";
-const switchValve = ()=>{
-  document.addEventListener("DOMContentLoaded", function () {
-  const buttonHum = document.getElementById("switchHum");
-  const buttonSec = document.getElementById("switchSec");
-
-  function togglebuttonHum() {
-    buttonHum.innerHTML = "ON";
-    buttonHum.style.backgroundColor = "var(--orangeClic974)";
-
-    buttonSec.innerHTML = "OFF";
-    buttonSec.style.backgroundColor = "var(--greenColor)";
-  }
-
-  function togglebuttonSec() {
-    buttonSec.innerHTML = "ON";
-    buttonSec.style.backgroundColor = "var(--orangeClic974)";
-
-    buttonHum.innerHTML = "OFF";
-    buttonHum.style.backgroundColor = "var(--greenColor)";
-  }
-
-  buttonHum.addEventListener("click", function () {
-    togglebuttonHum();
-    vanneActive = "vanneHum";
-    console.log("Vanne active", vanneActive);
-    saveVanneActive();
-  });
-  buttonSec.addEventListener("click", function () {
-    togglebuttonSec();
-    vanneActive = "vanneSec";
-    console.log("Vanne active", vanneActive);
-    saveVanneActive();
-  });
-});}
-
-switchValve()
-
-const saveVanneActive =()=>{
-  fetch('http://localhost:3003/api/gestionAirRoutes/postVanneActive/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      vanneActive
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log("postVanneActive => ",data);
-  })
-  .catch("postVanneActive error=> ",error => {
-    console.log(error);
-  });
-}
-
-//? -------------------------------------------------
-
-//! Afficher la date.
-
-// function pause(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
-
-// async function afficherDate() {
-//   while (true) {
-//     await pause(1000);
-//     var cejour = new Date();
-//     var options = {
-//       weekday: 'long',
-//       year: 'numeric',
-//       month: 'long',
-//       day: '2-digit',
-//     };
-//     var date = cejour.toLocaleDateString('fr-RU', options);
-//     var heure =
-//       ('0' + cejour.getHours()).slice(-2) +
-//       ':' +
-//       ('0' + cejour.getMinutes()).slice(-2) +
-//       ':' +
-//       ('0' + cejour.getSeconds()).slice(-2);
-//     var dateheure = date + ' ' + heure;
-//     var mydateheure = dateheure.replace(/(^\w{1})|(\s+\w{1})/g, (lettre) =>
-//       lettre.toUpperCase()
-//     );
-//     document.getElementById('afficheDate').innerHTML = mydateheure;
-//     //console.log("dateheure =>", dateheure);
-//   }
-// }
-
-// afficherDate();
-
-//! -------------------------------------------------
-
-//? Afficher la date.
-
- function afficherDateEtHeure() {
-  let dateEtHeure;
-
-  function afficherDate() {
-    let jours = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
-    let mois = [
-      "01",
-      "02",
-      "03",
-      "04",
-      "05",
-      "06",
-      "07",
-      "08",
-      "09",
-      "10",
-      "11",
-      "12",
-    ];
-
-    let maintenant = new Date();
-    let jourSemaine = jours[maintenant.getDay()];
-    let jour = maintenant.getDate();
-    let moisAnnee = mois[maintenant.getMonth()];
-    let annee = maintenant.getFullYear();
-    let heure = maintenant.getHours().toString().padStart(2, "0");
-    let minute = maintenant.getMinutes().toString().padStart(2, "0");
-    let seconde = maintenant.getSeconds().toString().padStart(2, "0");
-
-    dateEtHeure = `${jour}/${moisAnnee}/${annee}`;
-
-    const element = document.getElementById("afficheDate2");
-    if (element) {
-      element.innerHTML = dateEtHeure;
-    }
-  }
-
-  setInterval(() => {
-    // console.log(afficherDate());
-    afficherDate();
-  }, 1000);
-}
-
-afficherDateEtHeure()
-
-//? -------------------------------------------------
-
-//? Afficher l'heure.
-
- function afficherHeure() {
-  let myHeure;
-
-  function afficherHeure() {
-    let myDate = new Date();
-    let heure = myDate.getHours().toString().padStart(2, "0");
-    let minute = myDate.getMinutes().toString().padStart(2, "0");
-    let seconde = myDate.getSeconds().toString().padStart(2, "0");
-
-    myHeure = `  ${heure}:${minute}:${seconde}`;
-
-    const element = document.getElementById("afficheHeure");
-    if (element) {
-      element.innerHTML = myHeure;
-    } else {
-      console.log("Pas d'heure");
-    }
-  }
-
-  setInterval(() => {
-    afficherHeure();
-  }, 1000);
-}
-
-afficherHeure();
-
-//? -------------------------------------------------
-
-
-//! Récupération de la tempèrature Air dans la base.
+//? Récupération de la tempèrature Air dans la base.
 
 //* Température Air.
 
@@ -244,9 +60,9 @@ setInterval(() => {
   //console.log('récup tempAir');
 }, 10000);
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
-//! Récupération de la consigne Air dans la base.
+//? Récupération de la consigne Air dans la base.
 
 //* température Air.
 
@@ -414,9 +230,9 @@ setInterval(() => {
   // console.log('récup consigneAir');
 }, 15000);
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
-//! 3 Calcul du delta.
+//? 3 Calcul du delta.
 
 // let deltaAir;
 const calculDuDelta =()=>{
@@ -442,10 +258,10 @@ const calculDuDelta =()=>{
 
 //calculDuDelta();
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
 
-//!  Post consigne air dans la base.
+//?  Post consigne air dans la base.
 
 document
   .getElementById('validationConsigneAir')
@@ -479,7 +295,7 @@ document
     
   });
 
-//! Post des datas air dans la base.
+//? Post des datas air dans la base.
 
 document
   .getElementById('validationdataAir')
@@ -533,5 +349,5 @@ document
     window.location.reload();
   });
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 

@@ -542,7 +542,7 @@ button:active {
 
 .dateEtHeureHeure {
   border-radius: 5px;
-  font-size: 3.4rem;
+  font-size: 3.0rem;
   color: var(--orangeClic974);
   text-align: center;
   margin: 10px 0px 20px 0px ;
@@ -550,6 +550,6 @@ button:active {
 
 .dateEtHeureDate {
   border-radius: 0px 0px 0px 0px;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   text-align: center;
 }

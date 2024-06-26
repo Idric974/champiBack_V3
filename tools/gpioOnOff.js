@@ -2,9 +2,10 @@ const { exec } = require('child_process');
 
 let on= "gpioOn.py";
 let off= "gpioOff.py";
+let gpioPin = 22;
 
 
-exec(`python3 /home/pi/Desktop/champiBack_V3/pyton/${on}`, (error, stdout, stderr) => {
+exec(`python3 /home/pi/Desktop/champiBack_V3/python/${off} ${gpioPin}`, (error, stdout, stderr) => {
     if (error) {
         console.error(`Error executing script: ${error}`);
         return;

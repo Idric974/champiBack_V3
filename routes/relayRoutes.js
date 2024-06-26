@@ -30,7 +30,7 @@ router.get('/relayEauAuSol', relayCtrl.relayEauAuSol);
 
 //? Gestion des bouton Sec et Humide.
 
-router.get('/relayOnSecHum', relayCtrl.relayOnSecHum);
+router.post('/fermetureVanneSwitch', relayCtrl.fermetureVanneSwitch);
 
 //? ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

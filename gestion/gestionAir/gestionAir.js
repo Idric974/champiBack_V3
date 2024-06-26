@@ -514,6 +514,7 @@ let getTemperatures = () => {
 
             reject();
 
+
         }
 
     });
@@ -666,7 +667,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    new Gpio(ouvertureVanne, 'in');
 
                     // console.log('FIN Ouverture du froid');
 
@@ -703,7 +704,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    new Gpio(ouvertureVanne, 'in');
 
                     // console.log('FIN Ouverture du froid');
 
@@ -737,7 +738,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    new Gpio(ouvertureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -770,7 +771,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    new Gpio(ouvertureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -802,7 +803,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    new Gpio(ouvertureVanne, 'in');
                     // console.log('ouverture  du froid');
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -837,7 +838,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 1000;
 
-                new Gpio(22, 'out');
+                new Gpio(fermetureVanne, 'out');
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -850,7 +851,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(22, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -869,7 +870,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 2000;
 
-                new Gpio(22, 'out');
+                new Gpio(fermetureVanne, 'out');
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -882,7 +883,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(22, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -914,7 +915,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(22, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -933,7 +934,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(22, 'out');
+                new Gpio(fermetureVanne, 'out');
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -946,7 +947,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(22, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();
@@ -972,7 +973,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(22, 'out');
+                new Gpio(fermetureVanne, 'out');
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -985,7 +986,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(22, 'in');
+                    new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
                     miseAjourEtatRelay();

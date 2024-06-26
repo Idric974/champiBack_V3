@@ -14,14 +14,14 @@ sequelize
   .then(() => {
     console.log(
       '\x1b[32m',
-      '[ NODE SERVER      ] Connexion à la base de données OK 😃'
+      '[NODE SERVER] Connexion à la base de données réussie'
     );
   })
 
   .catch((err) => {
     console.log(
       '\x1b[32m',
-      '[ NODE SERVER      ] Connexion à la base de données ❌❌ échouée ❌❌',
+      '[NODE SERVER] Connexion à la base de données ❌❌ échouée ❌❌',
       err
     );
   });

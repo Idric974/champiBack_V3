@@ -1,20 +1,10 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 //? Afficher la date.
 
-const afficherDateEtHeure=()=>{  
+const showDate=()=>{  
 
-  let dateEtHeure;
+  let myDate;
 
-  function afficherDate() {
-    let jours = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
     let mois = [
       "01",
       "02",
@@ -31,37 +21,29 @@ const afficherDateEtHeure=()=>{
     ];
 
     let maintenant = new Date();
-    let jourSemaine = jours[maintenant.getDay()];
     let jour = maintenant.getDate();
     let moisAnnee = mois[maintenant.getMonth()];
     let annee = maintenant.getFullYear();
-    let heure = maintenant.getHours().toString().padStart(2, "0");
-    let minute = maintenant.getMinutes().toString().padStart(2, "0");
-    let seconde = maintenant.getSeconds().toString().padStart(2, "0");
 
-    dateEtHeure = `${jour}/${moisAnnee}/${annee}`;
+    myDate = `${jour}/${moisAnnee}/${annee}`;
 
     const element = document.getElementById("afficheDate");
     if (element) {
-      element.innerHTML = dateEtHeure;
-    }
-  }
-
-  setInterval(() => {
-    // console.log(afficherDate());
-    afficherDate();
-  }, 1000);
+      element.innerHTML = myDate;
+    };
+    // console.log("La date ==>",myDate);
+  
 }
 
 //? -------------------------------------------------
 
 //? Afficher l'heure.
 
-const afficherHeure=()=>{  
+const showTime=()=>{  
 
   let myHeure;
 
-  function afficherHeure() {
+  function updateTime() {
     let myDate = new Date();
     let heure = myDate.getHours().toString().padStart(2, "0");
     let minute = myDate.getMinutes().toString().padStart(2, "0");
@@ -78,55 +60,15 @@ const afficherHeure=()=>{
   }
 
   setInterval(() => {
-    afficherHeure();
+    updateTime();
   }, 1000);
 }
 
 //? -------------------------------------------------
 
-//? Gestion des boutons SEC et
+//? Gestion des boutons sec et humidité de l'accueil.
 
-const gpioOn = () => {
-  fetch('http://localhost:3003/api/relayRoutes/relayOnSecHum/')
-      .then(response => response.text())
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
-}
-
-const gpioOff = () => {
-  fetch('http://localhost:3003/api/relayRoutes/relayOffSecHum/')
-      .then(response => response.text())
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
-}
-
-
-module.exports = {
-  afficherDateEtHeure,
-  afficherHeure,
-  gpioOn,
-  gpioOff,
-
-}
-},{}],2:[function(require,module,exports){
-const { gpioOn,gpioOff}= require('../../functions/myfunctions')
-
-
-gpioOn();
-//gpioOff();
-
-
-
-
-//? switch Valve A/B.
+//* switch Valve A/B.
 
 let vanneActive = "vanneHum";
 const switchValve = ()=>{
@@ -151,20 +93,25 @@ const switchValve = ()=>{
   }
 
   buttonHum.addEventListener("click", function () {
+    let pin = 22;
+    let action = "off"
     togglebuttonHum();
     vanneActive = "vanneHum";
     console.log("Vanne active", vanneActive);
     saveVanneActive();
+    gpioAction(action,pin);
   });
+
   buttonSec.addEventListener("click", function () {
+    let pin = 22;
+    let action = "off"
     togglebuttonSec();
     vanneActive = "vanneSec";
     console.log("Vanne active", vanneActive);
     saveVanneActive();
+    gpioAction(action,pin);
   });
 });}
-
-switchValve()
 
 const saveVanneActive =()=>{
   fetch('http://localhost:3003/api/gestionAirRoutes/postVanneActive/', {
@@ -187,131 +134,47 @@ const saveVanneActive =()=>{
 
 //? -------------------------------------------------
 
-//! Afficher la date.
+//? Fermeture de la vanne lors du switch.
 
-// function pause(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
+const gpioAction = (action, pin) => {
+console.log('action + pin ==> ',action, pin);
 
-// async function afficherDate() {
-//   while (true) {
-//     await pause(1000);
-//     var cejour = new Date();
-//     var options = {
-//       weekday: 'long',
-//       year: 'numeric',
-//       month: 'long',
-//       day: '2-digit',
-//     };
-//     var date = cejour.toLocaleDateString('fr-RU', options);
-//     var heure =
-//       ('0' + cejour.getHours()).slice(-2) +
-//       ':' +
-//       ('0' + cejour.getMinutes()).slice(-2) +
-//       ':' +
-//       ('0' + cejour.getSeconds()).slice(-2);
-//     var dateheure = date + ' ' + heure;
-//     var mydateheure = dateheure.replace(/(^\w{1})|(\s+\w{1})/g, (lettre) =>
-//       lettre.toUpperCase()
-//     );
-//     document.getElementById('afficheDate').innerHTML = mydateheure;
-//     //console.log("dateheure =>", dateheure);
-//   }
-// }
 
-// afficherDate();
-
-//! -------------------------------------------------
-
-//? Afficher la date.
-
- function afficherDateEtHeure() {
-  let dateEtHeure;
-
-  function afficherDate() {
-    let jours = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
-    let mois = [
-      "01",
-      "02",
-      "03",
-      "04",
-      "05",
-      "06",
-      "07",
-      "08",
-      "09",
-      "10",
-      "11",
-      "12",
-    ];
-
-    let maintenant = new Date();
-    let jourSemaine = jours[maintenant.getDay()];
-    let jour = maintenant.getDate();
-    let moisAnnee = mois[maintenant.getMonth()];
-    let annee = maintenant.getFullYear();
-    let heure = maintenant.getHours().toString().padStart(2, "0");
-    let minute = maintenant.getMinutes().toString().padStart(2, "0");
-    let seconde = maintenant.getSeconds().toString().padStart(2, "0");
-
-    dateEtHeure = `${jour}/${moisAnnee}/${annee}`;
-
-    const element = document.getElementById("afficheDate2");
-    if (element) {
-      element.innerHTML = dateEtHeure;
-    }
-  }
-
-  setInterval(() => {
-    // console.log(afficherDate());
-    afficherDate();
-  }, 1000);
+  fetch('http://localhost:3003/api/relayRoutes/fermetureVanneSwitch/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ action,  pin })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
-
-afficherDateEtHeure()
 
 //? -------------------------------------------------
 
-//? Afficher l'heure.
-
- function afficherHeure() {
-  let myHeure;
-
-  function afficherHeure() {
-    let myDate = new Date();
-    let heure = myDate.getHours().toString().padStart(2, "0");
-    let minute = myDate.getMinutes().toString().padStart(2, "0");
-    let seconde = myDate.getSeconds().toString().padStart(2, "0");
-
-    myHeure = `  ${heure}:${minute}:${seconde}`;
-
-    const element = document.getElementById("afficheHeure");
-    if (element) {
-      element.innerHTML = myHeure;
-    } else {
-      console.log("Pas d'heure");
-    }
-  }
-
-  setInterval(() => {
-    afficherHeure();
-  }, 1000);
+module.exports = {
+  showDate,
+  showTime,
+  switchValve
 }
+},{}],2:[function(require,module,exports){
+const { 
+        showDate,
+        showTime,
+        switchValve,
+      }= require('../../functions/myfunctions')
 
-afficherHeure();
+showDate();
+showTime();
+switchValve();
 
-//? -------------------------------------------------
-
-
-//! Récupération de la tempèrature Air dans la base.
+//? Récupération de la tempèrature Air dans la base.
 
 //* Température Air.
 
@@ -363,9 +226,9 @@ setInterval(() => {
   //console.log('récup tempAir');
 }, 10000);
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
-//! Récupération de la consigne Air dans la base.
+//? Récupération de la consigne Air dans la base.
 
 //* température Air.
 
@@ -533,9 +396,9 @@ setInterval(() => {
   // console.log('récup consigneAir');
 }, 15000);
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
-//! 3 Calcul du delta.
+//? 3 Calcul du delta.
 
 // let deltaAir;
 const calculDuDelta =()=>{
@@ -561,10 +424,10 @@ const calculDuDelta =()=>{
 
 //calculDuDelta();
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
 
-//!  Post consigne air dans la base.
+//?  Post consigne air dans la base.
 
 document
   .getElementById('validationConsigneAir')
@@ -598,7 +461,7 @@ document
     
   });
 
-//! Post des datas air dans la base.
+//? Post des datas air dans la base.
 
 document
   .getElementById('validationdataAir')
@@ -652,7 +515,7 @@ document
     window.location.reload();
   });
 
-//! -------------------------------------------------
+//? -------------------------------------------------
 
 
 },{"../../functions/myfunctions":1}]},{},[2]);

@@ -1,19 +1,9 @@
 //? Afficher la date.
 
-const afficherDateEtHeure=()=>{  
+const showDate=()=>{  
 
-  let dateEtHeure;
+  let myDate;
 
-  function afficherDate() {
-    let jours = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
     let mois = [
       "01",
       "02",
@@ -30,37 +20,29 @@ const afficherDateEtHeure=()=>{
     ];
 
     let maintenant = new Date();
-    let jourSemaine = jours[maintenant.getDay()];
     let jour = maintenant.getDate();
     let moisAnnee = mois[maintenant.getMonth()];
     let annee = maintenant.getFullYear();
-    let heure = maintenant.getHours().toString().padStart(2, "0");
-    let minute = maintenant.getMinutes().toString().padStart(2, "0");
-    let seconde = maintenant.getSeconds().toString().padStart(2, "0");
 
-    dateEtHeure = `${jour}/${moisAnnee}/${annee}`;
+    myDate = `${jour}/${moisAnnee}/${annee}`;
 
     const element = document.getElementById("afficheDate");
     if (element) {
-      element.innerHTML = dateEtHeure;
-    }
-  }
-
-  setInterval(() => {
-    // console.log(afficherDate());
-    afficherDate();
-  }, 1000);
+      element.innerHTML = myDate;
+    };
+    // console.log("La date ==>",myDate);
+  
 }
 
 //? -------------------------------------------------
 
 //? Afficher l'heure.
 
-const afficherHeure=()=>{  
+const showTime=()=>{  
 
   let myHeure;
 
-  function afficherHeure() {
+  function updateTime() {
     let myDate = new Date();
     let heure = myDate.getHours().toString().padStart(2, "0");
     let minute = myDate.getMinutes().toString().padStart(2, "0");
@@ -77,41 +59,106 @@ const afficherHeure=()=>{
   }
 
   setInterval(() => {
-    afficherHeure();
+    updateTime();
   }, 1000);
 }
 
 //? -------------------------------------------------
 
-//? Gestion des boutons SEC et
+//? Gestion des boutons sec et humidité de l'accueil.
 
-const gpioOn = () => {
-  fetch('http://localhost:3003/api/relayRoutes/relayOnSecHum/')
-      .then(response => response.text())
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
+//* switch Valve A/B.
+
+let vanneActive = "vanneHum";
+const switchValve = ()=>{
+  document.addEventListener("DOMContentLoaded", function () {
+  const buttonHum = document.getElementById("switchHum");
+  const buttonSec = document.getElementById("switchSec");
+
+  function togglebuttonHum() {
+    buttonHum.innerHTML = "ON";
+    buttonHum.style.backgroundColor = "var(--orangeClic974)";
+
+    buttonSec.innerHTML = "OFF";
+    buttonSec.style.backgroundColor = "var(--greenColor)";
+  }
+
+  function togglebuttonSec() {
+    buttonSec.innerHTML = "ON";
+    buttonSec.style.backgroundColor = "var(--orangeClic974)";
+
+    buttonHum.innerHTML = "OFF";
+    buttonHum.style.backgroundColor = "var(--greenColor)";
+  }
+
+  buttonHum.addEventListener("click", function () {
+    let pin = 22;
+    let action = "off"
+    togglebuttonHum();
+    vanneActive = "vanneHum";
+    console.log("Vanne active", vanneActive);
+    saveVanneActive();
+    gpioAction(action,pin);
+  });
+
+  buttonSec.addEventListener("click", function () {
+    let pin = 22;
+    let action = "off"
+    togglebuttonSec();
+    vanneActive = "vanneSec";
+    console.log("Vanne active", vanneActive);
+    saveVanneActive();
+    gpioAction(action,pin);
+  });
+});}
+
+const saveVanneActive =()=>{
+  fetch('http://localhost:3003/api/gestionAirRoutes/postVanneActive/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      vanneActive
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("postVanneActive => ",data);
+  })
+  .catch("postVanneActive error=> ",error => {
+    console.log(error);
+  });
 }
 
-const gpioOff = () => {
-  fetch('http://localhost:3003/api/relayRoutes/relayOffSecHum/')
-      .then(response => response.text())
-      .then(data => {
-          console.log(data);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
+//? -------------------------------------------------
+
+//? Fermeture de la vanne lors du switch.
+
+const gpioAction = (action, pin) => {
+console.log('action + pin ==> ',action, pin);
+
+
+  fetch('http://localhost:3003/api/relayRoutes/fermetureVanneSwitch/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ action,  pin })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
 
+//? -------------------------------------------------
 
 module.exports = {
-  afficherDateEtHeure,
-  afficherHeure,
-  gpioOn,
-  gpioOff,
-
+  showDate,
+  showTime,
+  switchValve
 }

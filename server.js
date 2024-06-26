@@ -3,7 +3,6 @@ require('dotenv').config();
 const app = require('./app');
 const cors = require('cors');
 const vert = '\x1b[32m';
-// const logger = require('./src/logger');
 
 app.use(cors());
 
@@ -53,16 +52,11 @@ server.on('listening', () => {
   const bind =
     typeof address === 'string' ? 'pipe ' + address : 'port ' + `${port}`;
 
-  console.log(
-    vert,
-    '[ SERVER NODE           ] Le serveur est démarré sur le ' + bind
-  );
+    console.log('\x1b[32m','[NODE SERVER] Le serveur est démarré sur le http://localhost:'+port);
 });
 
 process.on('warning', (e) =>
-  console.warn('\x1b[33m', '[ LES WARNING ]', e.stack)
+  console.warn('\x1b[33m', '[WARNING]', e.stack)
 );
-
-// logger.info('Voici mon test de log');
 
 server.listen(port);
