@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
-  host: '127.0.0.1',
-  username: 'idric',
-  password: 'Kup33uC4W6',
-  database: 'champyresi',
-  dialect: 'mysql',
+  dialect: process.env.DIALECT,
+  host: process.env.MYSQL_HOST,
+  username: process.env.DB_USER_NAME,
+  password: process.env.DB_PASSWORD_CR,
+  database: process.env.DB_NAME,
+  dialect: process.env.DIALECT,
   logging: false,
 });
 
@@ -114,7 +115,6 @@ db.gestionLogsBack = require('./logsModels/gestionLogsModels')(
 db.gestionEtatBoutonRelayEauAuSol =
   require('./relayEauAuSol/relayEauAuSolModels')(sequelize, Sequelize);
 
-
 //? Gestion substrat.
 
 db.gestionSubstrat =
@@ -122,9 +122,5 @@ db.gestionSubstrat =
 
 db.gestionSubstratData =
   require('./gestionSubstrat/gestionSubstratDataModels')(sequelize, Sequelize);
-
-
-
-
 
 module.exports = db;
