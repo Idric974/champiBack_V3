@@ -6,87 +6,7 @@ const Sequelize = require('sequelize');
 const db = require('../../models');
 const axios = require('axios');
 const numSalle = require('../../configNumSalle');
-
-//! -------------------------------------------------- !
-
-// ! Les fonctions appelées.
-
-
-//? Mise à jour de l'état des relay.
-
-let etatRelay;
-
-let miseAjourEtatRelay = () => {
-    let lastId;
-    gestionAirModels
-        .findOne({
-            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-            raw: true,
-        })
-        .then((id) => {
-            // console.log('Le dernier id de gestionAir est : ', id);
-            // console.log(id.maxid);
-            lastId = id.maxid;
-
-            gestionAirModels
-                .update(
-                    { actionRelay: actionRelay, etatRelay: etatRelay },
-                    { where: { id: lastId } }
-                )
-
-                .then(function (result) {
-                    // console.log('Nb mise à jour data =======> ' + result);
-                })
-
-                .catch((err) => console.log(err));
-        });
-};
-
-//? --------------------------------------------------
-
-//? Envoyer un SMS d’alerte.
-
-const sendSMS = (temperatureDuMessage) => {
-
-    console.log('temperatureDuMessage :', temperatureDuMessage);
-
-    //! Url de la master.
-
-    const url = 'http://192.168.1.10:5000/api/postSms/postSms';
-
-    let date1 = new Date();
-
-    let dateLocale = date1.toLocaleString('fr-FR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric'
-    });
-
-    let message = `ALERTE : Salle ${numSalle} | ${temperatureDuMessage} | ${dateLocale}`;
-
-    axios
-        .post(url, {
-            message,
-        })
-        .then(function (response) {
-            console.log('Reponse de SMS808 : ', response.data);
-
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-
-}
-
-//? --------------------------------------------------
-
-//! --------------------------------------------------
-
-//! Les fonctions asynchrones.
+const {sendSMS, miseAjourEtatRelay, constructionAxeX}= require("../functions/myfunctions")
 
 //? Recupération de la vanne à utiliser.
 
@@ -96,53 +16,51 @@ let fermetureVanne;
 
 const gestionAirVannesModels = db.gestionAirVannes;
 
-let recuperationDeLaVanneActive = () => {
+const recuperationDeLaVanneActive = () => {
     return new Promise((resolve, reject) => {
+        gestionAirVannesModels
+            .findOne({
+                attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
+                raw: true,
+            })
+            .then(maxIdResult => {
+                if (!maxIdResult) {
+                    throw new Error("No max ID found");
+                }
+                return gestionAirVannesModels.findOne({ where: { id: maxIdResult.maxid } });
+            })
+            .then(result => {
+                if (!result) {
+                    throw new Error("No vanne found with max ID");
+                }
+                vanneActive = result.vanneActive;
+                let ouvertureVanne;
+                let fermetureVanne;
 
-        try {
-            gestionAirVannesModels
-                .findOne({
-                    attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
-                    raw: true,
-                })
-                .then((id) => {
-                    // console.log(id.maxid);
-
-                    gestionAirVannesModels
-                        .findOne({
-                            where: { id: id.maxid },
-                        })
-                        .then((result) => {
-                             console.log(result.vanneActive);
-                             vanneActive = result.vanneActive;
-                            
-                        })
-                        .then(() => {
-                            if (vanneActive === "vanneHum") {
-                               ouvertureVanne=22;
-                               fermetureVanne=23;
-                                console.log("relayVanne ==> ",vanneActive);
-                                resolve();
-                             }
-                             
-                             if (vanneActive === "vanneSec") {
-                                new Gpio(23, 'in');
-                  
-                  
-                                ouvertureVanne=24;
-                                fermetureVanne=25;
-                                 console.log("relayVanne ==> ",vanneActive);
-                                 resolve();
-                              }         
-                        });
-                });
-        } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Récupération de l'étalonage",
-                'color: orange', error);
-
-            reject();
-        }
+                if (vanneActive === "vanneHum") {
+                    ouvertureVanne = 22;
+                    fermetureVanne = 23;
+                    console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
+                    resolve({ ouvertureVanne, fermetureVanne });
+                } else if (vanneActive === "vanneSec") {
+                    new Gpio(23, 'in');
+                    ouvertureVanne = 24;
+                    fermetureVanne = 25;
+                    console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
+                    resolve({ ouvertureVanne, fermetureVanne });
+                } else {
+                    reject(console.log(`Unknown vanneActive value: ${vanneActive}`));
+                    throw new Error(`Unknown vanneActive value: ${vanneActive}`);
+                }
+             
+            })
+            .catch(error => {
+                console.error(
+                    "? %c ERREUR ==> gestions Air ==> Récupération de l'étalonage",
+                    'color: orange', error
+                );
+                reject(error);
+            });
     });
 }
 
@@ -150,71 +68,43 @@ let recuperationDeLaVanneActive = () => {
 
 //? Récupération de la consigne.
 
-let consigne;
-let pas;
-let objectif;
-
 const gestionAirsDataModels = db.gestionAirData;
 
-let recupérationDeLaConsigne = () => {
+const recupérationDeLaConsigne = () => {
     return new Promise((resolve, reject) => {
+        gestionAirsDataModels
+            .findOne({
+                attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
+                raw: true,
+            })
+            .then(maxIdResult => {
+                if (!maxIdResult) {
+                    throw new Error("No max ID found");
+                }
+                return gestionAirsDataModels.findOne({ where: { id: maxIdResult.maxid } });
+            })
+            .then(result => {
+                if (!result) {
+                    throw new Error("No data found with max ID");
+                }
 
-        try {
-            gestionAirsDataModels
-                .findOne({
-                    attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
-                    raw: true,
-                })
-                .then((id) => {
-                    // console.log(id.maxid);
+                const consigne = result.consigneAir;
+                const pas = result.pasAir;
+                const objectif = result.objectifAir;
 
-                    gestionAirsDataModels
-                        .findOne({
-                            where: { id: id.maxid },
-                        })
-                        .then((result) => {
-                            // console.log(result);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de la Consigne Air =", consigne);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération du Pas Air =", pas);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de l'Objectif Air =", objectif);
 
-                            lastId = result['id'];
-                            // console.log('LastId :   ', lastId);
-
-                            consigne = result['consigneAir'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération de la Consigne Air ============>",
-                            //     'color: green', consigne
-                            // );
-
-                            pas = result['pasAir'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération du Pas Air ====================>",
-                            //     'color: green', pas
-                            // );
-
-                            objectif = result['objectifAir'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération de l'Objectif Air =============>",
-                            //     'color: green', objectif
-                            // );
-                        })
-                        .then(() => {
-
-                            resolve();
-
-                        });
-                });
-        } catch (error) {
-
-            console.log('❌ %c ERREUR ==> gestions Air ==> Récupération de la consigne',
-                'color: orange', error);
-
-            reject();
-        }
-
+                resolve({ consigne, pas, objectif });
+            })
+            .catch(error => {
+                console.error("❌ ERREUR ==> gestions Air ==> Récupération de la consigne", 'color: orange', error);
+                reject(error);
+            });
     });
 }
+
 
 //? --------------------------------------------------
 
@@ -222,46 +112,34 @@ let recupérationDeLaConsigne = () => {
 
 const gestionAirEtalonnageModels = db.etalonnageAir;
 
-let recuperationDeEtalonage = () => {
+const recuperationDeEtalonage = () => {
     return new Promise((resolve, reject) => {
+        gestionAirEtalonnageModels
+            .findOne({
+                attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
+                raw: true,
+            })
+            .then(maxIdResult => {
+                if (!maxIdResult) {
+                    throw new Error("No max ID found");
+                }
+                return gestionAirEtalonnageModels.findOne({ where: { id: maxIdResult.maxid } });
+            })
+            .then(result => {
+                if (!result) {
+                    throw new Error("No data found with max ID");
+                }
 
-        try {
-            gestionAirEtalonnageModels
-                .findOne({
-                    attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
-                    raw: true,
-                })
-                .then((id) => {
-                    // console.log(id.maxid);
+                const etalonnage = result.etalonnageAir;
 
-                    gestionAirEtalonnageModels
-                        .findOne({
-                            where: { id: id.maxid },
-                        })
-                        .then((result) => {
-                            // console.log(result);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de l'étalonage =", etalonnage);
 
-                            etalonnage = result['etalonnageAir'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération de l'étalonage ================>",
-                            //     'color: green', etalonnage
-                            // );
-                        })
-                        .then(() => {
-
-                            resolve();
-
-                        });
-                });
-        } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Récupération de l'étalonage",
-                'color: orange', error);
-
-            reject();
-        }
-
+                resolve(etalonnage);
+            })
+            .catch(error => {
+                console.error("❌ ERREUR ==> gestions Air ==> Récupération de l'étalonage", 'color: orange', error);
+                reject(error);
+            });
     });
 }
 
@@ -274,249 +152,106 @@ let deltaAirPrecedent;
 
 const gestionAirModels = db.gestionAir;
 
-let recuperationEtatVanneFroid = () => {
+const recuperationEtatVanneFroid = () => {
     return new Promise((resolve, reject) => {
+        gestionAirModels
+            .findOne({
+                attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
+                raw: true,
+            })
+            .then(maxIdResult => {
+                if (!maxIdResult) {
+                    throw new Error("No max ID found");
+                }
+                return gestionAirModels.findOne({ where: { id: maxIdResult.maxid } });
+            })
+            .then(result => {
+                if (!result) {
+                    throw new Error("No data found with max ID");
+                }
 
-        try {
-            gestionAirModels
-                .findOne({
-                    attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxid']],
-                    raw: true,
-                })
-                .then((id) => {
-                    // console.log(id.maxid);
+                const etatVanneBDD = result.etatRelay;
+                const deltaAirPrecedent = result.deltaAir;
 
-                    gestionAirModels
-                        .findOne({
-                            where: { id: id.maxid },
-                        })
-                        .then((result) => {
-                            // console.log('⭐ Result gestionAirModels ====> ', result);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de l'état de la vanne froid =", etatVanneBDD);
+                console.log("✅ SUCCÈS ==> gestions Air ==> Récupération du delta air =", deltaAirPrecedent);
 
-                            etatVanneBDD = result['etatRelay'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération de l'état de la vanne froid ===>",
-                            //     'color: green', etatVanneBDD
-                            // );
-
-                            deltaAirPrecedent = result['deltaAir'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Récupération du delta air ==================>",
-                            //     'color: green', deltaAirPrecedent
-                            // );
-
-                        }).then(() => {
-
-                            resolve();
-
-                        });
-                });
-
-        } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Récupération de l'état de la vanne froid",
-                'color: orange', error);
-
-            reject();
-        }
-
+                resolve({ etatVanneBDD, deltaAirPrecedent });
+            })
+            .catch(error => {
+                console.error("❌ ERREUR ==> gestions Air ==> Récupération de l'état de la vanne froid", 'color: orange', error);
+                reject(error);
+            });
     });
 }
+
 
 //? --------------------------------------------------
 
 //? Construction de la valeur de l'axe x.
 
-let dateDuJour;
-let dateDemarrageCycle;
-let jourDuCycle;
-let heureDuCycle;
-let minuteDuCycle;
-let heureMinute;
 let valeurAxeX;
 
-const gestionCourbesModels = db.gestionCourbes;
+const  axeX = () => { 
+  return new Promise((resolve, reject) => { 
 
-let constructionAxeX = () => {
-    return new Promise((resolve, reject) => {
-
-        try {
-
-            gestionCourbesModels
-                .findOne({
-                    attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-                    raw: true,
-                })
-                .then((id) => {
-                    // console.log('Le dernier id de gestionAir est : ', id);
-                    // console.log(id.maxid);
-
-                    gestionCourbesModels
-                        .findOne({
-                            where: { id: id.maxid },
-                        })
-                        .then((result) => {
-
-                            //* dade démarrage du cycle.
-                            // console.log("result => ",result);
-                            dateDemarrageCycle = result['dateDemarrageCycle'];
-
-                            // console.log(
-                            //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X",
-                            //     'color: green', dateDemarrageCycle
-                            // );
-
-                            //* --------------------------------------------------
-
-                            // console.log('Le dernier id de gestionAir est : ', id);
-                            // console.log(id.maxid);
-
-                            gestionCourbesModels
-                                .findOne({
-                                    where: { id: id.maxid },
-                                })
-                                .then((result) => {
-
-                                    //* Date de démarrage du cycle.
-
-                                    dateDemarrageCycle = new Date(result['dateDemarrageCycle']);
-
-                                    // console.log(
-                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Date de démarrage du cycle ===>",
-                                    //     'color: green', dateDemarrageCycle
-                                    // );
-
-                                    //* --------------------------------------------------
-
-                                    //* Date du jour.
-
-                                    dateDuJour = new Date();
-
-                                    // console.log(
-                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X ===> Date du jour",
-                                    //     'color: green', dateDuJour
-                                    // );
-
-                                    //* --------------------------------------------------
-
-                                    //* Calcul du nombre de jour du cycle.
-
-                                    let nbJourBrut = dateDuJour.getTime() - dateDemarrageCycle.getTime();
-                                    jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24)) + 1;
-
-                                    // console.log(
-                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X ===> Calcul du nombre de jour du cycle",
-                                    //     'color: green', jourDuCycle
-                                    // );
-
-                                    //* --------------------------------------------------
-
-                                    //* Affichage de l'heure.
-                                    heureDuCycle = new Date().getHours();
-                                    minuteDuCycle = new Date().getMinutes();
-                                    heureMinute = heureDuCycle + 'h' + minuteDuCycle;
-
-                                    // console.log(
-                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe x ===> Affichage de l'heure",
-                                    //     'color: green', heureMinute
-                                    // );
-
-                                    //* --------------------------------------------------
-
-                                    //* Valeure de l'axe x.
-                                    valeurAxeX = 'Jour ' + jourDuCycle + ' - ' + heureMinute;
-
-                                    // console.log(
-                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe x ===> Valeure de l'axe X",
-                                    //     'color: green', valeurAxeX
-                                    // );
-
-                                    //* --------------------------------------------------
-
-                                })
-
-                        })
-
-                        .then(() => {
-
-                            resolve();
-
-                        });
-                });
-
-        } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X",
-                'color: orange', error);
-
-            reject();
-
-        }
-
+constructionAxeX()
+    .then((valeurAxeX) => {
+        resolve(console.error("✅ SUCCÈS ==> gestions Air ==> Valeur de l'axe X:", valeurAxeX)); 
+    })
+    .catch((error) => {
+        reject(console.error("Erreur lors de la construction de l'axe X:", error)); 
     });
-}
-
+   }); 
+ }  
+ 
 //? --------------------------------------------------
 
 //? Mesure de la température Air.
 
-let mcpBroche = 2;
 const mcpadc = require('mcp-spi-adc');
+let mcpBroche = 2;
 
 let getTemperatures = () => {
     return new Promise((resolve, reject) => {
-
         try {
-
             let temps = 0;
+            let listValAir = [];
 
-            let count = () => {
-                temps = temps++;
-
-                //console.log(temps++);
-
-                if (temps++ === 9) {
-                    clearInterval(conteur);
-
+            const tempSensor = mcpadc.open(mcpBroche, { speedHz: 20000 }, (err) => {
+                if (err) {
+                    console.error("❌ ERREUR ==> gestions Air ==> Ouverture du capteur de température", 'color: orange', err);
+                    return reject(err);
                 }
 
-                // console.log(jaune, '[ GESTION SUBSTRAT CALCULES  ] temps', temps);
-
-                const tempSensor = mcpadc.open(mcpBroche, { speedHz: 20000 }, (err) => {
-                    if (err) throw err;
+                let conteur = setInterval(() => {
+                    temps++;
+                    if (temps > 9) {
+                        clearInterval(conteur);
+                        resolve(listValAir);
+                    }
 
                     tempSensor.read((err, reading) => {
-                        if (err) throw err;
-                        listValAir.push(reading.value * 40);
+                        if (err) {
+                            clearInterval(conteur);
+                            console.error("❌ ERREUR ==> gestions Air ==> Lecture du capteur de température", 'color: orange', err);
+                            return reject(err);
+                        }
 
-                        // console.log(
-                        //     "✅ %c SUCCÈS ==> gestions Air ==> Mesure de la température Air",
-                        //     'color: green', listValAir
-                        // );
+                        listValAir.push(reading.value * 40);
+                        console.log("✅ SUCCÈS ==> gestions Air ==> Mesure de la température Air =", reading.value * 40);
 
                         if (listValAir.length >= 10) {
-                            // console.log('listValAir.length >=10');
-                            resolve()
+                            clearInterval(conteur);
+                            resolve(listValAir);
                         }
                     });
-                });
-
-            };
-
-            let conteur = setInterval(count, 1000);
-
+                }, 1000);
+            });
         } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Mesure de la température Air",
-                'color: orange', error);
-
-            reject();
-
-
+            console.error("❌ ERREUR ==> gestions Air ==> Mesure de la température Air", 'color: orange', error);
+            reject(error);
         }
-
     });
 }
 
@@ -525,41 +260,32 @@ let getTemperatures = () => {
 //? Calcule de la température moyenne.
 
 let listValAir = [];
-
 let temperatureMoyenneAir;
 
-let calculeDeLaTemperatureMoyenne = () => {
+const calculeDeLaTemperatureMoyenne = () => {
     return new Promise((resolve, reject) => {
-
         try {
+            const arrayLength = listValAir.length;
+            if (arrayLength === 0) {
+                throw new Error("List of air values is empty");
+            }
 
-            let arrayLength = listValAir.length
-            // console.log('Nb valeurs de listValAir :', arrayLength);
-
-            const reducer = (accumulator, curr) => accumulator + curr;
-            let sumlistValAir = listValAir.reduce(reducer)
-            // console.log('Somme valeurs listValAir : ', sumlistValAir);
-
+            const sumlistValAir = listValAir.reduce((accumulator, curr) => accumulator + curr, 0);
             temperatureMoyenneAir = Math.round((sumlistValAir / arrayLength) * 100) / 100;
 
-            // console.log(
-            //     "✅ %c SUCCÈS ==> gestions Air ==> Temperature air moyenne ====================>",
-            //     'color: green ', temperatureMoyenneAir
-            // );
+            console.log(
+                "✅ SUCCÈS ==> gestions Air ==> Temperature air moyenne ====================>",
+                'color: green ', temperatureMoyenneAir
+            );
 
-            resolve();
-
+            resolve(temperatureMoyenneAir);
         } catch (error) {
-
-            console.log("❌ %c ERREUR ==> gestions Air ==> Temperature air moyenne",
-                'color: orange', error);
-
-            reject();
-
+            console.error("❌ ERREUR ==> gestions Air ==> Temperature air moyenne", 'color: orange', error);
+            reject(error);
         }
-
     });
 }
+
 
 //? --------------------------------------------------
 
@@ -1090,7 +816,7 @@ let handleMyPromise = async () => {
 
         await recuperationEtatVanneFroid();
 
-        await constructionAxeX();
+        await axeX();
 
         await getTemperatures();
 

@@ -256,7 +256,7 @@ const calculDuDelta =()=>{
 
 }
 
-//calculDuDelta();
+calculDuDelta();
 
 //? -------------------------------------------------
 

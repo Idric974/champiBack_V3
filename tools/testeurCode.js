@@ -1,72 +1,49 @@
-const axios = require('axios');
-const jaune = '\x1b[33m';
+const db = require('../models');
+const Sequelize = require('sequelize');
 
-let dateDuJour;
-let dateDemarrageCycle;
-let difference;
-let jourDuCycle;
-let heureDuCycle;
-let minuteDuCycle;
-let heureMinute;
-let valeurAxeX;
+const gestionCourbesModels = db.gestionCourbes;
 
-//! Construction de la valeur de l'axe x.
+let constructionAxeX = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const maxIdResult = await gestionCourbesModels.findOne({
+                attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+                raw: true,
+            });
 
-let getDateDemarrageCycle = () => {
-  axios
-    .get('http://localhost:3003/api/gestionCourbeRoutes/getDateDemarrageCycle')
-    .then((response) => {
-      console.log(
-        'Date démarrage du cycle :---:',
-        response.data.dateDemarrageCycle.dateDemarrageCycle
-      );
+            const result = await gestionCourbesModels.findOne({
+                where: { id: maxIdResult.maxid },
+            });
 
-      //* Date du jour.
-      dateDuJour = new Date();
-      console.log('Date du Jour :---------------------:', dateDuJour);
-      //* --------------------------------------------------
+            const dateDemarrageCycle = new Date(result.dateDemarrageCycle);
+            const dateDuJour = new Date();
+            const nbJourBrut = dateDuJour.getTime() - dateDemarrageCycle.getTime();
+            const jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24));
 
-      //* Date de demarrage du cycle
-      dateDemarrageCycle = new Date(
-        response.data.dateDemarrageCycle.dateDemarrageCycle
-      );
-      console.log('La date de démarrage du cycle :----:', dateDemarrageCycle);
-      //* --------------------------------------------------
+            const heureDuCycle = dateDuJour.getHours();
+            const minuteDuCycle = dateDuJour.getMinutes();
 
-      //* Affichage du nombre de jour du cycle.
-      difference = Math.abs(dateDuJour - dateDemarrageCycle);
-      if (dateDuJour === dateDemarrageCycle) {
-        jourDuCycle = 1;
-        console.log('dateDuJour === dateDemarrageCycle');
-        console.log('Nombre de jour du cycle :----------:', jourDuCycle);
-      } else {
-        jourDuCycle = Math.round(difference / (1000 * 3600 * 24)) + 1;
-        console.log('dateDuJour > dateDemarrageCycle');
-        console.log('Nombre de jour du cycle :----------:', jourDuCycle);
-      }
+            // Fonction pour formater les heures et minutes
+            const formatTime = (unit) => (unit < 10 ? '0' : '') + unit;
+            const heureMinute = `${formatTime(heureDuCycle)}h${formatTime(minuteDuCycle)}`;
 
-      //* --------------------------------------------------
+            const valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
 
-      //* Affichage de l'heure.
-      heureDuCycle = new Date().getHours();
-      minuteDuCycle = new Date().getMinutes();
-      heureMinute = heureDuCycle + 'h' + minuteDuCycle;
-      console.log("l'heure du cycle :-----------------:", heureMinute);
-      //* --------------------------------------------------
+            console.log("✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: green', valeurAxeX);
 
-      //* Valeure de l'axe x.
-      valeurAxeX = 'Jour ' + jourDuCycle + ' - ' + heureMinute;
-      console.log(
-        jaune,
-        "[ GESTION AIR CALCULES  ] Valeure de l'axe x : ",
-        valeurAxeX
-      );
-      //* --------------------------------------------------
-    })
-    .catch((error) => {
-      console.log(error);
+            resolve(valeurAxeX);
+        } catch (error) {
+            console.log("❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: orange', error);
+            reject(error);
+        }
     });
 };
-getDateDemarrageCycle();
 
-//! -------------------------------------------------- !
+// Appel de la fonction et gestion de la promesse
+constructionAxeX()
+    .then((valeurAxeX) => {
+        console.log("Valeur de l'axe X:", valeurAxeX);
+    })
+    .catch((error) => {
+        console.error("Erreur lors de la construction de l'axe X:", error);
+    });

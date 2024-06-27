@@ -157,8 +157,128 @@ console.log('action + pin ==> ',action, pin);
 
 //? -------------------------------------------------
 
+//? Envoyer un SMS d’alerte.
+
+const sendSMS = (temperatureDuMessage) => {
+
+  console.log('temperatureDuMessage :', temperatureDuMessage);
+
+  //! Url de la master.
+
+  const url = 'http://192.168.1.10:5000/api/postSms/postSms';
+
+  let date1 = new Date();
+
+  let dateLocale = date1.toLocaleString('fr-FR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+  });
+
+  let message = `ALERTE : Salle ${numSalle} | ${temperatureDuMessage} | ${dateLocale}`;
+
+  axios
+      .post(url, {
+          message,
+      })
+      .then(function (response) {
+          console.log('Reponse de SMS808 : ', response.data);
+
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+
+}
+
+//? --------------------------------------------------
+
+//? Mise à jour de l'état des relay.
+
+let etatRelay;
+
+let miseAjourEtatRelay = () => {
+    let lastId;
+    gestionAirModels
+        .findOne({
+            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+            raw: true,
+        })
+        .then((id) => {
+            // console.log('Le dernier id de gestionAir est : ', id);
+            // console.log(id.maxid);
+            lastId = id.maxid;
+
+            gestionAirModels
+                .update(
+                    { actionRelay: actionRelay, etatRelay: etatRelay },
+                    { where: { id: lastId } }
+                )
+
+                .then(function (result) {
+                    // console.log('Nb mise à jour data =======> ' + result);
+                })
+
+                .catch((err) => console.log(err));
+        });
+};
+
+//? --------------------------------------------------
+
+//? Construction de la valeur de l'axe x.
+
+const db = require('../../models');
+const Sequelize = require('sequelize');
+
+const gestionCourbesModels = db.gestionCourbes;
+
+let constructionAxeX = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const maxIdResult = await gestionCourbesModels.findOne({
+                attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+                raw: true,
+            });
+
+            const result = await gestionCourbesModels.findOne({
+                where: { id: maxIdResult.maxid },
+            });
+
+            const dateDemarrageCycle = new Date(result.dateDemarrageCycle);
+            const dateDuJour = new Date();
+            const nbJourBrut = dateDuJour.getTime() - dateDemarrageCycle.getTime();
+            const jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24));
+
+            const heureDuCycle = dateDuJour.getHours();
+            const minuteDuCycle = dateDuJour.getMinutes();
+
+            // Fonction pour formater les heures et minutes
+            const formatTime = (unit) => (unit < 10 ? '0' : '') + unit;
+            const heureMinute = `${formatTime(heureDuCycle)}h${formatTime(minuteDuCycle)}`;
+
+            const valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
+
+           // console.log("✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: green', valeurAxeX);
+
+            resolve(valeurAxeX);
+        } catch (error) {
+            console.log("❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: orange', error);
+            reject(error);
+        }
+    });
+};
+
+//? --------------------------------------------------
+
 module.exports = {
   showDate,
   showTime,
-  switchValve
+  switchValve,
+  sendSMS,
+  miseAjourEtatRelay,
+  constructionAxeX
 }

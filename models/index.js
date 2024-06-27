@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+require("dotenv").config();
 
 const sequelize = new Sequelize({
   dialect: process.env.DIALECT,
@@ -6,8 +7,9 @@ const sequelize = new Sequelize({
   username: process.env.DB_USER_NAME,
   password: process.env.DB_PASSWORD_CR,
   database: process.env.DB_NAME,
-  dialect: process.env.DIALECT,
+  dialect:process.env.DIALECT,
   logging: false,
+  
 });
 
 sequelize
