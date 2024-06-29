@@ -38,16 +38,27 @@ const recuperationDeLaVanneActive = () => {
                 let fermetureVanne;
 
                 if (vanneActive === "vanneHum") {
-                    ouvertureVanne = 22;
-                    fermetureVanne = 23;
+
+                    new Gpio(24, 'in');
+                    setTimeout(() => {
+                    new Gpio(24, 'out');  
+                    }, 40000);
+                    ouvertureVanne = 23;
+                    fermetureVanne = 22;
                     console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
                     resolve({ ouvertureVanne, fermetureVanne });
+
                 } else if (vanneActive === "vanneSec") {
-                    new Gpio(23, 'in');
-                    ouvertureVanne = 24;
-                    fermetureVanne = 25;
+
+                    new Gpio(22, 'in');
+                    setTimeout(() => {
+                        new Gpio(22, 'out');  
+                    }, 40000);
+                    ouvertureVanne = 25;
+                    fermetureVanne = 24;
                     console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
                     resolve({ ouvertureVanne, fermetureVanne });
+
                 } else {
                     reject(console.log(`Unknown vanneActive value: ${vanneActive}`));
                     throw new Error(`Unknown vanneActive value: ${vanneActive}`);
