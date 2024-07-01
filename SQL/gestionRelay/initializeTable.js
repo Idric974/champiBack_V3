@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const tableName = "relay_eau_au_sol";
 
 const data = {
-  etatRelayEauAuSol: 0,
+  etatRelayEauAuSol: 50,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

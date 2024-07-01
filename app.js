@@ -106,6 +106,9 @@ app.use('/api/broche', brocheRoutes);
 const orderSmsRoutes = require('./routes/gestionSmsOrders');
 app.use('/api/postSmsOrderRoute', orderSmsRoutes);
 
+const functionsRoutes = require('./routes/backendRoutes/functionsRoutes/functionRouteHandler');
+app.use('/api/functionsRoutes', functionsRoutes);
+
 //! --------------------------------------------------
 
 module.exports = app;

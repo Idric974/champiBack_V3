@@ -159,6 +159,8 @@ console.log('action + pin ==> ',action, pin);
 
 //? Envoyer un SMS d’alerte.
 
+const numSalle = require('../../configNumSalle');
+
 const sendSMS = (temperatureDuMessage) => {
 
   console.log('temperatureDuMessage :', temperatureDuMessage);
@@ -199,77 +201,21 @@ const sendSMS = (temperatureDuMessage) => {
 
 //? Mise à jour de l'état des relay.
 
-let etatRelay;
-
-let miseAjourEtatRelay = () => {
-    let lastId;
-    gestionAirModels
-        .findOne({
-            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-            raw: true,
-        })
-        .then((id) => {
-            // console.log('Le dernier id de gestionAir est : ', id);
-            // console.log(id.maxid);
-            lastId = id.maxid;
-
-            gestionAirModels
-                .update(
-                    { actionRelay: actionRelay, etatRelay: etatRelay },
-                    { where: { id: lastId } }
-                )
-
-                .then(function (result) {
-                    // console.log('Nb mise à jour data =======> ' + result);
-                })
-
-                .catch((err) => console.log(err));
-        });
-};
-
-//? --------------------------------------------------
-
-//? Construction de la valeur de l'axe x.
-
-const db = require('../../models');
-const Sequelize = require('sequelize');
-
-const gestionCourbesModels = db.gestionCourbes;
-
-let constructionAxeX = () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const maxIdResult = await gestionCourbesModels.findOne({
-                attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-                raw: true,
-            });
-
-            const result = await gestionCourbesModels.findOne({
-                where: { id: maxIdResult.maxid },
-            });
-
-            const dateDemarrageCycle = new Date(result.dateDemarrageCycle);
-            const dateDuJour = new Date();
-            const nbJourBrut = dateDuJour.getTime() - dateDemarrageCycle.getTime();
-            const jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24));
-
-            const heureDuCycle = dateDuJour.getHours();
-            const minuteDuCycle = dateDuJour.getMinutes();
-
-            // Fonction pour formater les heures et minutes
-            const formatTime = (unit) => (unit < 10 ? '0' : '') + unit;
-            const heureMinute = `${formatTime(heureDuCycle)}h${formatTime(minuteDuCycle)}`;
-
-            const valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
-
-           // console.log("✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: green', valeurAxeX);
-
-            resolve(valeurAxeX);
-        } catch (error) {
-            console.log("❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: orange', error);
-            reject(error);
-        }
-    });
+let miseAjourEtatRelay = (etatRelay) => {
+  fetch('http://localhost:3003/api/functionsRoutes/majEtatRelay', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ etatRelay })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 };
 
 //? --------------------------------------------------
@@ -280,5 +226,4 @@ module.exports = {
   switchValve,
   sendSMS,
   miseAjourEtatRelay,
-  constructionAxeX
 }

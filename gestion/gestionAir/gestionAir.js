@@ -2,11 +2,8 @@
 
 const Gpio = require('onoff').Gpio;
 const sequelize = require('sequelize');
-const Sequelize = require('sequelize');
 const db = require('../../models');
-const axios = require('axios');
-const numSalle = require('../../configNumSalle');
-const {sendSMS, miseAjourEtatRelay, constructionAxeX}= require("../functions/myfunctions")
+const {sendSMS, miseAjourEtatRelay}= require("../functions/myfunctions")
 
 //? Recupération de la vanne à utiliser.
 
@@ -196,7 +193,6 @@ const recuperationEtatVanneFroid = () => {
     });
 }
 
-
 //? --------------------------------------------------
 
 //? Construction de la valeur de l'axe x.
@@ -205,14 +201,27 @@ let valeurAxeX;
 
 const  axeX = () => { 
   return new Promise((resolve, reject) => { 
-
-constructionAxeX()
-    .then((valeurAxeX) => {
-        resolve(console.error("✅ SUCCÈS ==> gestions Air ==> Valeur de l'axe X:", valeurAxeX)); 
-    })
-    .catch((error) => {
-        reject(console.error("Erreur lors de la construction de l'axe X:", error)); 
-    });
+  
+        fetch('http://localhost:3003/api/constructionAxeX/constructionAxeX/', {
+          method: 'GET',
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(data => {
+             //console.log("DATA BRUTE : axeX =>",data);
+             valeurAxeX = data.valeurAxeX;
+             console.log("DATA BRUTE : valeurAxeX =>",valeurAxeX);
+             resolve({valeurAxeX})
+          })
+          .catch(error => {
+            reject( console.log(error))
+            console.log(JSON.stringify(error));
+          });
+    
    }); 
  }  
  
@@ -400,7 +409,7 @@ let definitionDesActions = () => {
 
                 actionRelay = 1;
 
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
@@ -409,7 +418,7 @@ let definitionDesActions = () => {
                     // console.log('FIN Ouverture du froid');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -437,7 +446,7 @@ let definitionDesActions = () => {
 
                 actionRelay = 1;
 
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
@@ -446,7 +455,7 @@ let definitionDesActions = () => {
                     // console.log('FIN Ouverture du froid');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -471,14 +480,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(ouvertureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -504,14 +513,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(ouvertureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -536,14 +545,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(ouvertureVanne, 'in');
                     // console.log('ouverture  du froid');
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -561,7 +570,7 @@ let definitionDesActions = () => {
 
                 etatRelay = etatVanneBDD;
                 actionRelay = 0;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
                 resolve();
 
                 //***************************************************************
@@ -584,14 +593,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -616,14 +625,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -648,14 +657,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -680,14 +689,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -719,14 +728,14 @@ let definitionDesActions = () => {
                 }
 
                 actionRelay = 1;
-                miseAjourEtatRelay();
+                miseAjourEtatRelay(etatRelay, actionRelay);
 
                 setTimeout(() => {
                     //
                     new Gpio(fermetureVanne, 'in');
 
                     actionRelay = 0;
-                    miseAjourEtatRelay();
+                    miseAjourEtatRelay(etatRelay, actionRelay);
                     //
                     resolve();
                 }, dureeAction);
@@ -818,29 +827,17 @@ let enregistrementDatas = () => {
 let handleMyPromise = async () => {
 
     try {
-
-        await recuperationDeLaVanneActive();
-
-        await recupérationDeLaConsigne();
-
-        await recuperationDeEtalonage();
-
-        await recuperationEtatVanneFroid();
-
-        await axeX();
-
-        await getTemperatures();
-
-        await calculeDeLaTemperatureMoyenne();
-
-        await definitionTemperatureAirCorrigee();
-
-        await definitionDuDelta();
-
-        await definitionDesActions();
-
-        await enregistrementDatas();
-
+        //await recuperationDeLaVanneActive();
+        //await recupérationDeLaConsigne();
+        //await recuperationDeEtalonage();
+        //await recuperationEtatVanneFroid();
+        //await axeX();
+        //await getTemperatures();
+        //await calculeDeLaTemperatureMoyenne();
+        //await definitionTemperatureAirCorrigee();
+        //await definitionDuDelta();
+        //await definitionDesActions();
+        //await enregistrementDatas();
     }
     catch (err) {
         console.log('err finale :', err);

@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       },
 
       etatRelay: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
     }
