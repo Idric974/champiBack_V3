@@ -827,17 +827,17 @@ let enregistrementDatas = () => {
 let handleMyPromise = async () => {
 
     try {
-        //await recuperationDeLaVanneActive();
-        //await recupérationDeLaConsigne();
-        //await recuperationDeEtalonage();
-        //await recuperationEtatVanneFroid();
-        //await axeX();
-        //await getTemperatures();
-        //await calculeDeLaTemperatureMoyenne();
-        //await definitionTemperatureAirCorrigee();
-        //await definitionDuDelta();
-        //await definitionDesActions();
-        //await enregistrementDatas();
+        await recuperationDeLaVanneActive();
+        await recupérationDeLaConsigne();
+        await recuperationDeEtalonage();
+        await recuperationEtatVanneFroid();
+        await axeX();
+        await getTemperatures();
+        await calculeDeLaTemperatureMoyenne();
+        await definitionTemperatureAirCorrigee();
+        await definitionDuDelta();
+        await definitionDesActions();
+        await enregistrementDatas();
     }
     catch (err) {
         console.log('err finale :', err);
