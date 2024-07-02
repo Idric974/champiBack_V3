@@ -1,5 +1,3 @@
-//! Les constantes.
-
 const Gpio = require('onoff').Gpio;
 const sequelize = require('sequelize');
 const db = require('../../models');
@@ -49,7 +47,7 @@ const recuperationDeLaVanneActive = () => {
 
                     new Gpio(22, 'in');
                     setTimeout(() => {
-                        new Gpio(22, 'out');  
+                    new Gpio(22, 'out');  
                     }, 40000);
                     ouvertureVanne = 25;
                     fermetureVanne = 24;
@@ -76,6 +74,10 @@ const recuperationDeLaVanneActive = () => {
 
 //? Récupération de la consigne.
 
+let consigne ;
+let pas ;
+let objectif ;
+
 const gestionAirsDataModels = db.gestionAirData;
 
 const recupérationDeLaConsigne = () => {
@@ -96,9 +98,9 @@ const recupérationDeLaConsigne = () => {
                     throw new Error("No data found with max ID");
                 }
 
-                const consigne = result.consigneAir;
-                const pas = result.pasAir;
-                const objectif = result.objectifAir;
+                consigne = result.consigneAir;
+                pas = result.pasAir;
+                objectif = result.objectifAir;
 
                 console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de la Consigne Air =", consigne);
                 console.log("✅ SUCCÈS ==> gestions Air ==> Récupération du Pas Air =", pas);
@@ -117,6 +119,8 @@ const recupérationDeLaConsigne = () => {
 //? --------------------------------------------------
 
 //? Récupération de l'étalonage.
+
+let etalonnage;
 
 const gestionAirEtalonnageModels = db.etalonnageAir;
 
@@ -138,7 +142,7 @@ const recuperationDeEtalonage = () => {
                     throw new Error("No data found with max ID");
                 }
 
-                const etalonnage = result.etalonnageAir;
+              etalonnage = result.etalonnageAir;
 
                 console.log("✅ SUCCÈS ==> gestions Air ==> Récupération de l'étalonage =", etalonnage);
 
@@ -202,7 +206,7 @@ let valeurAxeX;
 const  axeX = () => { 
   return new Promise((resolve, reject) => { 
   
-        fetch('http://localhost:3003/api/constructionAxeX/constructionAxeX/', {
+        fetch('http://localhost:3003/api/functionsRoutes/constructionAxeX/', {
           method: 'GET',
         })
           .then(response => {
@@ -229,51 +233,63 @@ const  axeX = () => {
 
 //? Mesure de la température Air.
 
-const mcpadc = require('mcp-spi-adc');
 let mcpBroche = 2;
+const mcpadc = require('mcp-spi-adc');
 
 let getTemperatures = () => {
     return new Promise((resolve, reject) => {
-        try {
-            let temps = 0;
-            let listValAir = [];
 
-            const tempSensor = mcpadc.open(mcpBroche, { speedHz: 20000 }, (err) => {
-                if (err) {
-                    console.error("❌ ERREUR ==> gestions Air ==> Ouverture du capteur de température", 'color: orange', err);
-                    return reject(err);
+        try {
+
+            let temps = 0;
+
+            let count = () => {
+                temps = temps++;
+
+                //console.log(temps++);
+
+                if (temps++ === 9) {
+                    clearInterval(conteur);
+
                 }
 
-                let conteur = setInterval(() => {
-                    temps++;
-                    if (temps > 9) {
-                        clearInterval(conteur);
-                        resolve(listValAir);
-                    }
+                // console.log(jaune, '[ GESTION SUBSTRAT CALCULES  ] temps', temps);
+
+                const tempSensor = mcpadc.open(mcpBroche, { speedHz: 20000 }, (err) => {
+                    if (err) throw err;
 
                     tempSensor.read((err, reading) => {
-                        if (err) {
-                            clearInterval(conteur);
-                            console.error("❌ ERREUR ==> gestions Air ==> Lecture du capteur de température", 'color: orange', err);
-                            return reject(err);
-                        }
-
+                        if (err) throw err;
                         listValAir.push(reading.value * 40);
-                        console.log("✅ SUCCÈS ==> gestions Air ==> Mesure de la température Air =", reading.value * 40);
+
+                        console.log(
+                            "✅ %c SUCCÈS ==> gestions Air ==> Mesure de la température Air",
+                            'color: green', listValAir
+                        );
 
                         if (listValAir.length >= 10) {
-                            clearInterval(conteur);
-                            resolve(listValAir);
+                            // console.log('listValAir.length >=10');
+                            resolve()
                         }
                     });
-                }, 1000);
-            });
+                });
+
+            };
+
+            let conteur = setInterval(count, 1000);
+
         } catch (error) {
-            console.error("❌ ERREUR ==> gestions Air ==> Mesure de la température Air", 'color: orange', error);
-            reject(error);
+
+            console.log("❌ %c ERREUR ==> gestions Air ==> Mesure de la température Air",
+                'color: orange', error);
+
+            reject();
+
         }
+
     });
 }
+
 
 //? --------------------------------------------------
 
@@ -321,10 +337,10 @@ let definitionTemperatureAirCorrigee = () => {
             temperatureCorrigee =
                 parseFloat(temperatureMoyenneAir.toFixed(1)) + etalonnage;
 
-            // console.log(
-            //     "✅ %c SUCCÈS ==> gestions Air ==> Définition de la température air corrigée ==>",
-            //     'color: green', temperatureCorrigee
-            // );
+            console.log(
+                "✅ %c SUCCÈS ==> gestions Air ==> Définition de la température air corrigée ==>",
+                'color: green', temperatureCorrigee
+            );
 
             resolve();
 
@@ -353,10 +369,10 @@ let definitionDuDelta = () => {
 
             delta = parseFloat((temperatureCorrigee - consigne).toFixed(1));
 
-            // console.log(
-            //     "✅ %c SUCCÈS ==> gestions Air ==> Définition du delta ========================>",
-            //     'color: green', delta
-            // );
+            console.log(
+                "✅ %c SUCCÈS ==> gestions Air ==> Définition du delta ========================>",
+                'color: green', delta
+            );
 
             resolve();
 
@@ -388,7 +404,7 @@ let definitionDesActions = () => {
 
                 let temperatureDuMessage = 'le delta est supérieur à 3°C'
 
-                sendSMS(temperatureDuMessage);
+               // sendSMS(temperatureDuMessage);
 
                 //! Condition à 15 secondes.
 
@@ -710,14 +726,14 @@ let definitionDesActions = () => {
 
                 let temperatureDuMessage = 'le delta est inférieur à -3°C'
 
-                sendSMS(temperatureDuMessage);
+               // sendSMS(temperatureDuMessage);
 
                 //! Condition à 5 secondes.
 
                 console.log(
                     "⭐ %c SUCCÈS ==> gestions Air ==> Action fermeture ==> delta < -1.5");
 
-                let dureeAction = 15000;
+                let dureeAction = 40000;
 
                 new Gpio(fermetureVanne, 'out');
 
@@ -810,17 +826,6 @@ let enregistrementDatas = () => {
 }
 
 //? --------------------------------------------------
-
-//? Affichage des datas
-
-
-
-
-
-//? --------------------------------------------------
-
-
-//! -------------------------------------------------- !
 
 //! Exécution des fonctions asynchrones.
 

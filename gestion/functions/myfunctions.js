@@ -166,36 +166,38 @@ const sendSMS = (temperatureDuMessage) => {
   console.log('temperatureDuMessage :', temperatureDuMessage);
 
   //! Url de la master.
-
   const url = 'http://192.168.1.10:5000/api/postSms/postSms';
 
   let date1 = new Date();
 
   let dateLocale = date1.toLocaleString('fr-FR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
   });
 
   let message = `ALERTE : Salle ${numSalle} | ${temperatureDuMessage} | ${dateLocale}`;
 
-  axios
-      .post(url, {
-          message,
-      })
-      .then(function (response) {
-          console.log('Reponse de SMS808 : ', response.data);
-
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Reponse de SMS808 : ', data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
+
 
 //? --------------------------------------------------
 

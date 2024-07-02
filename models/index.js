@@ -7,7 +7,6 @@ const sequelize = new Sequelize({
   password: 'Kup33uC4W6',
   database: 'champyresi',
   dialect: 'mysql',
-  port: 3306,
   logging: false,
 });
 
