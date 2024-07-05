@@ -136,7 +136,7 @@ const saveVanneActive =()=>{
 //? Fermeture de la vanne lors du switch.
 
 const gpioAction = (action, pin) => {
-console.log('action + pin ==> ',action, pin);
+// console.log('action + pin ==> ',action, pin);
 
 
   fetch('http://localhost:3003/api/relayRoutes/fermetureVanneSwitch/', {
@@ -228,4 +228,5 @@ module.exports = {
   switchValve,
   sendSMS,
   miseAjourEtatRelay,
+  gpioAction
 }

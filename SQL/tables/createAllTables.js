@@ -1,6 +1,13 @@
 const mysql = require('mysql');
 const myDataBaseConfig = require("../config/dbConfig");
-const db = mysql.createConnection(myDataBaseConfig);
+const db = mysql.createConnection({
+  host: '127.0.0.1',
+  user: 'idric',
+  password: 'Kup33uC4W6',
+  database: 'champyresi',
+  dialect: 'mysql',
+  logging: false,
+});
 
 db.connect(function (err) {
   if (err) throw err;

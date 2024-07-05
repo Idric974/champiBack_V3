@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "concurrently -n ' Serveur Back , Cron Tab     ' -c 'green' \" nodemon server.js\" \" node /home/pi/Desktop/champiBack_V3/cronTab.js\"   ",
+     "dev": "nodemon server.js",
     "✔️_sandBox": " node /home/pi/Desktop/champiBack_V3/gestion/outils/sandBox.js",
     "✔️_gestionAir": " node /home/pi/Desktop/champiBack_V3/gestion/gestionAir/gestionAir.js",
     "✔️_gestionHum": " node /home/pi/Desktop/champiBack_V3/gestion/gestionHum/gestionHum.js",
@@ -49,6 +50,7 @@
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",
     "nodemon": "^3.1.4",
+    "onoff": "^6.0.3",
     "pg-hstore": "^2.3.4",
     "pigpio": "^3.3.1",
     "rpi-gpio": "^2.1.7",

@@ -1,7 +1,7 @@
 const Gpio = require('onoff').Gpio;
 const sequelize = require('sequelize');
 const db = require('../../models');
-const {sendSMS, miseAjourEtatRelay}= require("../functions/myfunctions")
+const {sendSMS, miseAjourEtatRelay,gpioAction}= require("../functions/myfunctions")
 
 //? Recupération de la vanne à utiliser.
 
@@ -29,28 +29,31 @@ const recuperationDeLaVanneActive = () => {
                     throw new Error("No vanne found with max ID");
                 }
                 vanneActive = result.vanneActive;
-                let ouvertureVanne;
-                let fermetureVanne;
-
+              
                 if (vanneActive === "vanneHum") {
 
-                    new Gpio(24, 'in');
+                    gpioAction('out','24')
+                
                     setTimeout(() => {
-                    new Gpio(24, 'out');  
+                    gpioAction('in','24')
+                  
                     }, 40000);
-                    ouvertureVanne = 23;
-                    fermetureVanne = 22;
+
+                    ouvertureVanne = '23';
+                    fermetureVanne = '22';
                     console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
                     resolve({ ouvertureVanne, fermetureVanne });
 
                 } else if (vanneActive === "vanneSec") {
 
-                    new Gpio(22, 'in');
+                    gpioAction('out','22');
+                  
                     setTimeout(() => {
-                    new Gpio(22, 'out');  
+                    gpioAction('in','22')
                     }, 40000);
-                    ouvertureVanne = 25;
-                    fermetureVanne = 24;
+
+                    ouvertureVanne = '25';
+                    fermetureVanne = '24';
                     console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
                     resolve({ ouvertureVanne, fermetureVanne });
 
@@ -114,7 +117,6 @@ const recupérationDeLaConsigne = () => {
             });
     });
 }
-
 
 //? --------------------------------------------------
 
@@ -201,33 +203,134 @@ const recuperationEtatVanneFroid = () => {
 
 //? Construction de la valeur de l'axe x.
 
+let dateDuJour;
+let dateDemarrageCycle;
+let jourDuCycle;
+let heureDuCycle;
+let minuteDuCycle;
+let heureMinute;
 let valeurAxeX;
 
-const  axeX = () => { 
-  return new Promise((resolve, reject) => { 
-  
-        fetch('http://localhost:3003/api/functionsRoutes/constructionAxeX/', {
-          method: 'GET',
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-          })
-          .then(data => {
-             //console.log("DATA BRUTE : axeX =>",data);
-             valeurAxeX = data.valeurAxeX;
-             console.log("DATA BRUTE : valeurAxeX =>",valeurAxeX);
-             resolve({valeurAxeX})
-          })
-          .catch(error => {
-            reject( console.log(error))
-            console.log(JSON.stringify(error));
-          });
-    
-   }); 
- }  
+const gestionCourbesModels = db.gestionCourbes;
+
+let constructionAxeX = () => {
+    return new Promise((resolve, reject) => {
+
+        try {
+
+            gestionCourbesModels
+                .findOne({
+                    attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+                    raw: true,
+                })
+                .then((id) => {
+                    // console.log('Le dernier id de gestionAir est : ', id);
+                    // console.log(id.maxid);
+
+                    gestionCourbesModels
+                        .findOne({
+                            where: { id: id.maxid },
+                        })
+                        .then((result) => {
+
+                            //* dade démarrage du cycle.
+
+                            dateDemarrageCycle = result['dateDemarrageCycle'];
+
+                            // console.log(
+                            //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X",
+                            //     'color: green', dateDemarrageCycle
+                            // );
+
+                            //* --------------------------------------------------
+
+                            // console.log('Le dernier id de gestionAir est : ', id);
+                            // console.log(id.maxid);
+
+                            gestionCourbesModels
+                                .findOne({
+                                    where: { id: id.maxid },
+                                })
+                                .then((result) => {
+
+                                    //* Date de démarrage du cycle.
+
+                                    dateDemarrageCycle = new Date(result['dateDemarrageCycle']);
+
+                                    // console.log(
+                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Date de démarrage du cycle ===>",
+                                    //     'color: green', dateDemarrageCycle
+                                    // );
+
+                                    //* --------------------------------------------------
+
+                                    //* Date du jour.
+
+                                    dateDuJour = new Date();
+
+                                    // console.log(
+                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X ===> Date du jour",
+                                    //     'color: green', dateDuJour
+                                    // );
+
+                                    //* --------------------------------------------------
+
+                                    //* Calcul du nombre de jour du cycle.
+
+                                    let nbJourBrut = dateDuJour.getTime() - dateDemarrageCycle.getTime();
+                                    jourDuCycle = Math.round(nbJourBrut / (1000 * 3600 * 24)) + 1;
+
+                                    // console.log(
+                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X ===> Calcul du nombre de jour du cycle",
+                                    //     'color: green', jourDuCycle
+                                    // );
+
+                                    //* --------------------------------------------------
+
+                                    //* Affichage de l'heure.
+                                    heureDuCycle = new Date().getHours();
+                                    minuteDuCycle = new Date().getMinutes();
+                                    heureMinute = heureDuCycle + 'h' + minuteDuCycle;
+
+                                    // console.log(
+                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe x ===> Affichage de l'heure",
+                                    //     'color: green', heureMinute
+                                    // );
+
+                                    //* --------------------------------------------------
+
+                                    //* Valeure de l'axe x.
+                                    valeurAxeX = 'Jour ' + jourDuCycle + ' - ' + heureMinute;
+
+                                    // console.log(
+                                    //     "✅ %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe x ===> Valeure de l'axe X",
+                                    //     'color: green', valeurAxeX
+                                    // );
+
+                                    //* --------------------------------------------------
+
+                                })
+
+                        })
+
+                        .then(() => {
+
+                            resolve();
+
+                        });
+                });
+
+        } catch (error) {
+
+            console.log("❌ %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X",
+                'color: orange', error);
+
+            reject();
+
+        }
+
+    });
+}
  
 //? --------------------------------------------------
 
@@ -360,7 +463,7 @@ let definitionTemperatureAirCorrigee = () => {
 
 //? Définition du delta.
 
-let delta;
+let delta ;
 
 let definitionDuDelta = () => {
     return new Promise((resolve, reject) => {
@@ -392,6 +495,8 @@ let definitionDuDelta = () => {
 
 //? Définition des actions.
 
+let dureeAction1 = 1000;
+
 let definitionDesActions = () => {
     return new Promise((resolve, reject) => {
 
@@ -413,8 +518,8 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(ouvertureVanne, 'out');
-
+                gpioAction('out',ouvertureVanne)
+              
                 // console.log('Ouverture du froid');
 
                 if (etatVanneBDD >= 100) {
@@ -429,7 +534,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(ouvertureVanne, 'in');
+                    gpioAction('in',ouvertureVanne)
 
                     // console.log('FIN Ouverture du froid');
 
@@ -450,7 +555,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(ouvertureVanne, 'out');
+                gpioAction('out',ouvertureVanne)
 
                 // console.log('Ouverture du froid');
 
@@ -466,7 +571,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(ouvertureVanne, 'in');
+                    gpioAction('in',ouvertureVanne)
 
                     // console.log('FIN Ouverture du froid');
 
@@ -487,7 +592,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 5000;
 
-                new Gpio(ouvertureVanne, 'out');
+                gpioAction('out',ouvertureVanne)
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -500,7 +605,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(ouvertureVanne, 'in');
+                    gpioAction('in',ouvertureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -520,7 +625,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 2000;
 
-                new Gpio(ouvertureVanne, 'out');
+                gpioAction('out',ouvertureVanne)
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -533,7 +638,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(ouvertureVanne, 'in');
+                    gpioAction('in',ouvertureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -552,7 +657,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 1000;
 
-                new Gpio(ouvertureVanne, 'out');
+                gpioAction('out',ouvertureVanne)
 
                 if (etatVanneBDD >= 100) {
                     etatRelay = 100;
@@ -565,7 +670,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(ouvertureVanne, 'in');
+                    gpioAction('in',ouvertureVanne)
                     // console.log('ouverture  du froid');
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -600,7 +705,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 1000;
 
-                new Gpio(fermetureVanne, 'out');
+                gpioAction('out',fermetureVanne)
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -613,7 +718,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    gpioAction('in',fermetureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -632,7 +737,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 2000;
 
-                new Gpio(fermetureVanne, 'out');
+                gpioAction('out',fermetureVanne)
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -645,7 +750,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    gpioAction('in',fermetureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -664,7 +769,9 @@ let definitionDesActions = () => {
 
                 let dureeAction = 5000;
 
-                new Gpio(22, 'out');
+                console.log("fermetureVanne ======> ",fermetureVanne);
+
+                gpioAction('out',fermetureVanne)
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -677,7 +784,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    gpioAction('in',fermetureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -696,7 +803,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 15000;
 
-                new Gpio(fermetureVanne, 'out');
+                gpioAction('out',fermetureVanne)
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -709,7 +816,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    gpioAction('in',fermetureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -735,7 +842,7 @@ let definitionDesActions = () => {
 
                 let dureeAction = 40000;
 
-                new Gpio(fermetureVanne, 'out');
+                gpioAction('out',fermetureVanne)
 
                 if (etatVanneBDD <= 0) {
                     etatRelay = 0;
@@ -748,7 +855,7 @@ let definitionDesActions = () => {
 
                 setTimeout(() => {
                     //
-                    new Gpio(fermetureVanne, 'in');
+                    gpioAction('in',fermetureVanne)
 
                     actionRelay = 0;
                     miseAjourEtatRelay(etatRelay, actionRelay);
@@ -836,7 +943,7 @@ let handleMyPromise = async () => {
         await recupérationDeLaConsigne();
         await recuperationDeEtalonage();
         await recuperationEtatVanneFroid();
-        await axeX();
+       // await axeX();
         await getTemperatures();
         await calculeDeLaTemperatureMoyenne();
         await definitionTemperatureAirCorrigee();

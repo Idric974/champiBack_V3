@@ -52,13 +52,13 @@ const mysql = require("mysql");
 
 //? Table Gestion air etat relays.
 
-let tableName = "gestion_airs_etat_relays";
+// let tableName = "gestion_airs_etat_relays";
 
-const data = {
-  etatRelay: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+// const data = {
+//   etatRelay: 0,
+//   createdAt: new Date(),
+//   updatedAt: new Date(),
+// };
 
 //? -------------------------------------------------
 

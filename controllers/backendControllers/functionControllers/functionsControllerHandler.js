@@ -74,7 +74,7 @@ let actionRelay = req.body.actionRelay;
                 )
 
                 .then(function (result) {
-                   console.log('Nb mise à jour data =======> ' + result);
+                   // console.log('Nb mise à jour data =======> ' + result);
                    res.status(200).json({ Message : result });
                 })
 

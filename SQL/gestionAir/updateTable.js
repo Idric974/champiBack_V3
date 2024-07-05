@@ -47,10 +47,20 @@ const mysql = require("mysql");
 
 //? Table Gestion air etat relays.
 
-const tableName = "gestion_airs_etat_relays";
+// const tableName = "gestion_airs_etat_relays";
+
+// const newData = {
+//   etatRelay: 35,
+// };
+
+//? -------------------------------------------------
+
+//? Table Gestion air vannes.
+
+const tableName = "gestion_vannes";
 
 const newData = {
-  etatRelay: 35,
+  vanneActive: "vanneHum",
 };
 
 //? -------------------------------------------------

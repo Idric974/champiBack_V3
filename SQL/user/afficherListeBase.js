@@ -1,8 +1,7 @@
 const configDataBase = require("../config/dbConfig");
 const mysql = require("mysql");
 
-const databaseName = "champyresi";
-
+//? Les tables.
 const db = mysql.createConnection(configDataBase.dbConfig);
 
 const connectToDatabase = () => {
@@ -18,34 +17,25 @@ const connectToDatabase = () => {
   });
 };
 
-const listTables = (databaseName) => {
+const listTables = () => {
   return new Promise((resolve, reject) => {
-    const sql = `SHOW TABLES FROM ${mysql.escapeId(databaseName)}`;
+    const sql = `SELECT table_name FROM information_schema.tables WHERE table_schema = '${configDataBase.dbConfig.database}'`;
+
     db.query(sql, (err, results) => {
       if (err) {
-        console.error(
-          "Erreur lors de la récupération de la liste des tables:",
-          err
-        );
+        console.error("Erreur lors de la lecture des tables:", err);
         return reject(err);
       }
+      console.log("Liste des tables 👍:", results.map(row => row.table_name));
       resolve(results);
     });
   });
 };
 
-const displayTables = (tables, databaseName) => {
-  console.log(`Liste des tables dans la base de données ${databaseName}:`);
-  tables.forEach((table) => {
-    console.log("⭐ :", table[`Tables_in_${databaseName}`]);
-  });
-};
-
-const run = async (databaseName) => {
+const run = async () => {
   try {
     await connectToDatabase();
-    const tables = await listTables(databaseName);
-    displayTables(tables, databaseName);
+    await listTables();
   } catch (err) {
     console.error("Une erreur s'est produite:", err);
     process.exit(1); // Quitte le processus avec un code d'erreur
@@ -60,4 +50,4 @@ const run = async (databaseName) => {
   }
 };
 
-run(databaseName);
+run();

@@ -3,7 +3,32 @@ const mysql = require("mysql");
 
 //? Les tables.
 
-let tableName = "users";
+//* gestion_airs
+// let tableName = 'gestion_airs';
+// let tableName = 'gestion_airs_datas';
+// let tableName = 'gestion_airs_etalonnages';
+// let tableName = 'gestion_airs_etat_relays';
+
+ //* gestion_co2s
+// let tableName = 'gestion_co2s';
+// let tableName = 'gestion_co2s_datas';
+
+//* gestion_hums
+// let tableName = 'gestion_hums';
+// let tableName = 'gestion_hums_datas';
+// let tableName = 'gestion_hums_etalonnage_hums';
+// let tableName = 'gestion_hums_etalonnage_secs';
+
+//* gestion_substrats
+// let tableName = 'gestion_substrats';
+// let tableName = 'gestion_substrats_datas';
+
+// let tableName = 'gestion_courbes';
+// let tableName = 'relay_eau_au_sols';
+// let tableName = 'relay_eau_au_sol'; //vide
+// let tableName = 'gestion_logs';
+// let tableName = 'gestion_vannes';
+
 
 //? -------------------------------------------------
 
