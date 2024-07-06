@@ -3,20 +3,20 @@ const mysql = require("mysql");
 
 //? Table Gestion air.
 
-// const tableName = "gestion_airs";
+const tableName = "gestion_airs";
 
-// const newData = {
-//   temperatureAir: 10,
-//   deltaAir: 11,
-//   days: 12,
-//   heures: 13,
-//   etatRelay: 14,
-//   actionRelay: 15,
-//   consigne: 16,
-//   valeurAxeX: 17,
-//   jourDuCycle: new Date(),
-//   updatedAt: new Date(),
-// };
+const newData = {
+  temperatureAir: 10,
+  deltaAir: 11,
+  days: 12,
+  heures: 13,
+  etatRelay: 14,
+  actionRelay: 15,
+  consigne: 16,
+  valeurAxeX: 17,
+  jourDuCycle: new Date(),
+  updatedAt: new Date(),
+};
 
 //? -------------------------------------------------
 
@@ -57,11 +57,11 @@ const mysql = require("mysql");
 
 //? Table Gestion air vannes.
 
-const tableName = "gestion_vannes";
+// const tableName = "gestion_vannes";
 
-const newData = {
-  vanneActive: "vanneHum",
-};
+// const newData = {
+//   vanneActive: "vanneHum",
+// };
 
 //? -------------------------------------------------
 

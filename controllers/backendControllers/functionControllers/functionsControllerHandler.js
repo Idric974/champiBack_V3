@@ -1,20 +1,19 @@
-const Sequelize = require('sequelize');
-const db = require('../../../models');
+const Sequelize = require("sequelize");
+const db = require("../../../models");
 
 //? Construction de la valeur de l'axe x.
 
 const gestionCourbesModels = db.gestionCourbes;
 
 exports.constructionAxeX = async (req, res) => {
-
   try {
     // Combinez les requêtes pour récupérer maxid et dateDemarrageCycle en une seule requête
     const maxIdResult = await gestionCourbesModels.findOne({
       attributes: [
-        [Sequelize.fn('max', Sequelize.col('id')), 'maxid'],
-        'dateDemarrageCycle'
+        [Sequelize.fn("max", Sequelize.col("id")), "maxid"],
+        "dateDemarrageCycle",
       ],
-      order: [[Sequelize.fn('max', Sequelize.col('id')), 'DESC']],
+      order: [[Sequelize.fn("max", Sequelize.col("id")), "DESC"]],
       raw: true,
     });
 
@@ -31,19 +30,31 @@ exports.constructionAxeX = async (req, res) => {
     const heureDuCycle = dateDuJour.getHours();
     const minuteDuCycle = dateDuJour.getMinutes();
 
-    const formatTime = (unit) => (unit < 10 ? '0' : '') + unit;
-    const heureMinute = `${formatTime(heureDuCycle)}h${formatTime(minuteDuCycle)}`;
+    const formatTime = (unit) => (unit < 10 ? "0" : "") + unit;
+    const heureMinute = `${formatTime(heureDuCycle)}h${formatTime(
+      minuteDuCycle
+    )}`;
 
     const valeurAxeX = `Jour ${jourDuCycle} - ${heureMinute}`;
 
-    console.log("? %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: green', valeurAxeX);
+    console.log(
+      "? %c SUCCÈS ==> gestions Air ==> Construction de la valeur de l'axe X",
+      "color: green",
+      valeurAxeX
+    );
 
     res.status(200).json({ valeurAxeX });
   } catch (error) {
-    console.log("? %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X", 'color: orange', error);
-    res.status(500).json({ error: "Erreur lors de la construction de la valeur de l'axe X" });
+    console.log(
+      "? %c ERREUR ==> gestions Air ==> Construction de la valeur de l'axe X",
+      "color: orange",
+      error
+    );
+    res.status(500).json({
+      error: "Erreur lors de la construction de la valeur de l'axe X",
+    });
   }
-}
+};
 
 //? --------------------------------------------------
 
@@ -52,33 +63,31 @@ exports.constructionAxeX = async (req, res) => {
 const majEtatRelaydata = db.gestionAir;
 
 exports.majEtatRelay = async (req, res) => {
-
-let etatRelay = req.body.etatRelay;
-let actionRelay = req.body.actionRelay;
+  let etatRelay = req.body.etatRelay;
+  let actionRelay = req.body.actionRelay;
 
   let lastId;
   majEtatRelaydata
-        .findOne({
-            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-            raw: true,
+    .findOne({
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
+      raw: true,
+    })
+    .then((id) => {
+      //console.log('Le dernier id de gestionAir est : ', id);
+      // console.log(id.maxid);
+      lastId = id.maxid;
+
+      majEtatRelaydata
+        .update(
+          { actionRelay: actionRelay, etatRelay: etatRelay },
+          { where: { id: lastId } }
+        )
+
+        .then(function (result) {
+          // console.log('Nb mise à jour data =======> ' + result);
+          res.status(200);
         })
-        .then((id) => {
-            //console.log('Le dernier id de gestionAir est : ', id);
-            // console.log(id.maxid);
-            lastId = id.maxid;
 
-            majEtatRelaydata
-                .update(
-                    { actionRelay: actionRelay, etatRelay: etatRelay },
-                    { where: { id: lastId } }
-                )
-
-                .then(function (result) {
-                   // console.log('Nb mise à jour data =======> ' + result);
-                   res.status(200).json({ Message : result });
-                })
-
-                .catch((err) => console.log(err));
-        });
-
-}
+        .catch((err) => console.log(err));
+    });
+};

@@ -1,14 +1,14 @@
 //! Les constantes
 
-const Sequelize = require('sequelize');
-const db = require('../models');
+const Sequelize = require("sequelize");
+const db = require("../models");
 const gestionAirModels = db.gestionAir;
 
 //! -------------------------------------------------
 
 //! Les variables.
 
-let Gpio = require('onoff').Gpio;
+let Gpio = require("onoff").Gpio;
 let test = 27;
 let etatRelay;
 
@@ -21,7 +21,7 @@ let etatRelay;
 miseAjourEtatRelay = () => {
   gestionAirModels
     .findOne({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
     })
     .then((id) => {
@@ -33,7 +33,7 @@ miseAjourEtatRelay = () => {
         .update({ etatRelay: etatRelay }, { where: { id: lastId } })
 
         .then(function (result) {
-          console.log('result etat relay =======> ' + result);
+          console.log("result etat relay =======> " + result);
         })
 
         .catch((err) => console.log(err));
@@ -47,7 +47,7 @@ miseAjourEtatRelay = () => {
 miseAjourActionRelay = () => {
   gestionAirModels
     .findOne({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
     })
     .then((id) => {
@@ -59,7 +59,7 @@ miseAjourActionRelay = () => {
         .update({ actionRelay: actionRelay }, { where: { id: lastId } })
 
         .then(function (result) {
-          console.log('result etat relay =======> ' + result);
+          console.log("result etat relay =======> " + result);
         })
 
         .catch((err) => console.log(err));
@@ -75,7 +75,7 @@ let valEtatRelay;
 recuperationEtatRlay = () => {
   gestionAirModels
     .findOne({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
     })
     .then((id) => {
@@ -87,7 +87,7 @@ recuperationEtatRlay = () => {
           where: { id: id.maxid },
         })
         .then((result) => {
-          valEtatRelay = result['etatRelay'];
+          valEtatRelay = result["etatRelay"];
 
           // console.log('valEtatRelay : ' + valEtatRelay);
           // console.log('valEtatRelay : ' + typeof valEtatRelay);
@@ -102,7 +102,7 @@ recuperationEtatRlay = () => {
 miseAjourEtatRelayEauAuSol = () => {
   relayEauAuSol
     .findOne({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
     })
     .then((id) => {
@@ -114,7 +114,7 @@ miseAjourEtatRelayEauAuSol = () => {
         .update({ etatRelayEauAuSol: 1 }, { where: { id: lastId } })
 
         .then(function (result) {
-          console.log('result etat relay =======> ' + result);
+          console.log("result etat relay =======> " + result);
         })
 
         .catch((err) => console.log(err));
@@ -132,7 +132,7 @@ exports.miseAZeroEtatVanne = (res, req) => {
 
   const newEtalAir = miseAJourEtatRelay
     .findOne({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+      attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
       raw: true,
     })
     .then((id) => {
@@ -144,7 +144,7 @@ exports.miseAZeroEtatVanne = (res, req) => {
         .update({ etatRelay: 0 }, { where: { id: lastId } })
 
         .then(() => {
-          console.log('Data Air enregitrées dans la base gestion_airs');
+          console.log("Data Air enregitrées dans la base gestion_airs");
         })
 
         .catch((err) => console.log(err));
@@ -159,7 +159,7 @@ exports.getEtatBoutonEauAuSol = (req, res) => {
   try {
     relayBoutonEauAuSol
       .findOne({
-        attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+        attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
         raw: true,
       })
       .then((id) => {
@@ -189,17 +189,14 @@ let eauAuSol = 16; // 16
 const relayBoutonEauAuSol = db.gestionEtatBoutonRelayEauAuSol;
 
 exports.relayEauAuSol = (req, res, next) => {
-
   //? Les promesses.
 
   let getEtatRelayEauAuSol = () => {
     return new Promise((resolve, reject) => {
-
       try {
-
         relayBoutonEauAuSol
           .findOne({
-            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+            attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
             raw: true,
           })
           .then((id) => {
@@ -211,44 +208,41 @@ exports.relayEauAuSol = (req, res, next) => {
                 where: { id: id.maxid },
               })
               .then((result) => {
-                etatRelayEauAuSol = result['etatRelayEauAuSol'];
+                etatRelayEauAuSol = result["etatRelayEauAuSol"];
                 resolve();
 
                 // console.log(
                 //   'Etat Relay au eau au Sol de départ : ',
                 //   etatRelayEauAuSol
                 // );
-
               });
           });
-
       } catch (error) {
-
-        console.log("❌ %c ERREUR ==> Relays eau au sol ==> Clic sur le bouton eau au sol",
-          'color: orange', error);
+        console.log(
+          "❌ %c ERREUR ==> Relays eau au sol ==> Clic sur le bouton eau au sol",
+          "color: orange",
+          error
+        );
 
         reject();
-
       }
     });
-  }
+  };
 
   let activationDeactivationBoutonRelayEauAuSol = () => {
     return new Promise((resolve, reject) => {
-
       try {
-
         if (etatRelayEauAuSol === 0) {
           //
-          new Gpio(eauAuSol, 'out');
+          new Gpio(eauAuSol, "out");
 
-          console.log('Relay au sol = On');
+          console.log("Relay au sol = On");
 
           //* Mise à jour de la basede donnée.
 
           relayBoutonEauAuSol
             .findOne({
-              attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+              attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
               raw: true,
             })
             .then((id) => {
@@ -260,23 +254,24 @@ exports.relayEauAuSol = (req, res, next) => {
                 .update({ etatRelayEauAuSol: 1 }, { where: { id: lastId } })
 
                 .then(function (result) {
-                  console.log('Activation relay ===> ', result);
+                  console.log("Activation relay ===> ", result);
                 })
 
                 .catch((err) => console.log(err));
             });
 
           setTimeout(() => {
+            new Gpio(eauAuSol, "in");
 
-            new Gpio(eauAuSol, 'in');
-
-            console.log('Relay au sol = Off');
+            console.log("Relay au sol = Off");
 
             //* Mise à jour de la basede donnée.
 
             relayBoutonEauAuSol
               .findOne({
-                attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+                attributes: [
+                  [Sequelize.fn("max", Sequelize.col("id")), "maxid"],
+                ],
                 raw: true,
               })
               .then((id) => {
@@ -289,7 +284,7 @@ exports.relayEauAuSol = (req, res, next) => {
 
                   .then(function (result) {
                     console.log(
-                      'Déactivation relay après setTimeout  ===> ',
+                      "Déactivation relay après setTimeout  ===> ",
                       result
                     );
                   })
@@ -297,23 +292,22 @@ exports.relayEauAuSol = (req, res, next) => {
                   .catch((err) => console.log(err));
               });
 
-            res.status(200).json({ message: 'Eau au sol déactivé ✅' });
+            res.status(200).json({ message: "Eau au sol déactivé ✅" });
 
             resolve();
 
             //*-------------------------------------
           }, 120000);
         } else if (etatRelayEauAuSol === 1) {
+          new Gpio(eauAuSol, "in");
 
-          new Gpio(eauAuSol, 'in');
-
-          console.log('Relay au sol = Off');
+          console.log("Relay au sol = Off");
 
           //* Mise à jour de la basede donnée.
 
           relayBoutonEauAuSol
             .findOne({
-              attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+              attributes: [[Sequelize.fn("max", Sequelize.col("id")), "maxid"]],
               raw: true,
             })
             .then((id) => {
@@ -325,7 +319,7 @@ exports.relayEauAuSol = (req, res, next) => {
                 .update({ etatRelayEauAuSol: 0 }, { where: { id: lastId } })
 
                 .then(function (result) {
-                  console.log('Déactivation relay au clic  ===> ', result);
+                  console.log("Déactivation relay au clic  ===> ", result);
                 })
 
                 .catch((err) => console.log(err));
@@ -333,45 +327,39 @@ exports.relayEauAuSol = (req, res, next) => {
 
           //*-------------------------------------
 
-          res.status(200).json({ message: 'Eau au sol déactivé ✅' });
+          res.status(200).json({ message: "Eau au sol déactivé ✅" });
 
           resolve();
         }
-
       } catch (error) {
-
-        console.log("❌ %c ERREUR ==> Relays eau au sol ==> Action bouton",
-          'color: orange', error);
+        console.log(
+          "❌ %c ERREUR ==> Relays eau au sol ==> Action bouton",
+          "color: orange",
+          error
+        );
 
         reject();
-
       }
-
     });
-  }
+  };
 
   //?---------------------------------------------------
 
-  //? Resolve promise. 
+  //? Resolve promise.
 
   let handleMyPromise = async () => {
-
     try {
-
       await getEtatRelayEauAuSol();
 
       await activationDeactivationBoutonRelayEauAuSol();
-
-    }
-    catch (err) {
-      console.log('err :', err);
+    } catch (err) {
+      console.log("err :", err);
     }
   };
 
   handleMyPromise();
 
   //?---------------------------------------------------
-
 };
 
 //!---------------------------------------------------
@@ -384,16 +372,16 @@ exports.relayVentilo = (req, res, next) => {
   let relayVentilo = req.body.relayVentilo;
 
   if (relayVentilo == 1) {
-    new Gpio(ventilateur, 'out');
+    new Gpio(ventilateur, "out");
     // const relay27On = new Gpio(27, 'out');
 
-    res.status(200).json({ message: 'ventilateur ON' });
+    res.status(200).json({ message: "ventilateur ON" });
   }
   if (relayVentilo == 0) {
-    new Gpio(ventilateur, 'in');
+    new Gpio(ventilateur, "in");
     // const relay27On = new Gpio(27, 'in');
 
-    res.status(200).json({ message: 'ventilateur OFF' });
+    res.status(200).json({ message: "ventilateur OFF" });
   }
 };
 
@@ -405,20 +393,20 @@ exports.relayVanneFroid5SecondesOn = (req, res, next) => {
   //
   let relayVanneFroid = req.body.etatRelay;
 
-  if (relayVanneFroid == 'ON') {
+  if (relayVanneFroid == "ON") {
     actionRelay = 1;
     miseAjourActionRelay();
 
     recuperationEtatRlay();
 
-    new Gpio(23, 'out'); //! << Mode Test >>
+    new Gpio(23, "out"); //! << Mode Test >>
     // const relay_22_ON = new Gpio(27, 'out');
 
-    res.status(200).json({ message: 'Relay Vanne Froid à 5 Secondes ON: OK' });
+    res.status(200).json({ message: "Relay Vanne Froid à 5 Secondes ON: OK" });
 
     setTimeout(() => {
       //
-      new Gpio(23, 'in');
+      new Gpio(23, "in");
       // const relay_22_OFF = new Gpio(27, 'in'); //! << Mode Test >>
 
       if (valEtatRelay >= 100) {
@@ -433,16 +421,16 @@ exports.relayVanneFroid5SecondesOn = (req, res, next) => {
       miseAjourEtatRelay();
     }, 5000);
   }
-  if (relayVanneFroid == 'OFF') {
+  if (relayVanneFroid == "OFF") {
     actionRelay = 1;
     miseAjourActionRelay();
 
     recuperationEtatRlay();
 
-    new Gpio(22, 'out');
+    new Gpio(22, "out");
 
     setTimeout(() => {
-      new Gpio(22, 'in');
+      new Gpio(22, "in");
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;
@@ -456,7 +444,7 @@ exports.relayVanneFroid5SecondesOn = (req, res, next) => {
       miseAjourEtatRelay();
     }, 5000);
 
-    res.status(200).json({ message: 'Relay Vanne Froid à 5 Secondes OFF: OK' });
+    res.status(200).json({ message: "Relay Vanne Froid à 5 Secondes OFF: OK" });
   }
 };
 
@@ -468,19 +456,18 @@ exports.relayVanneFroid40SecondesOn = (req, res, next) => {
   //
   let relayVanneFroid = req.body.etatRelay;
 
-  if (relayVanneFroid == 'ON') {
+  if (relayVanneFroid == "ON") {
     actionRelay = 1;
     miseAjourActionRelay();
 
     recuperationEtatRlay();
 
-    new Gpio(23, 'out');
+    new Gpio(23, "out");
 
-    res.status(200).json({ message: 'Relay Vanne Froid à 40 Secondes ON: OK' });
+    res.status(200).json({ message: "Relay Vanne Froid à 40 Secondes ON: OK" });
 
     setTimeout(() => {
-      new Gpio(23, 'in');
-
+      new Gpio(23, "in");
 
       if (valEtatRelay >= 100) {
         etatRelay = 100;
@@ -494,18 +481,16 @@ exports.relayVanneFroid40SecondesOn = (req, res, next) => {
       miseAjourEtatRelay();
     }, 40000);
   }
-  if (relayVanneFroid == 'OFF') {
+  if (relayVanneFroid == "OFF") {
     actionRelay = 1;
     miseAjourActionRelay();
 
     recuperationEtatRlay();
 
-    new Gpio(22, 'out');
-
+    new Gpio(22, "out");
 
     setTimeout(() => {
-      new Gpio(22, 'in');
-
+      new Gpio(22, "in");
 
       if (valEtatRelay <= 0) {
         etatRelay = 0;
@@ -521,7 +506,7 @@ exports.relayVanneFroid40SecondesOn = (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: 'Relay Vanne Froid à 40 Secondes OFF: OK' });
+      .json({ message: "Relay Vanne Froid à 40 Secondes OFF: OK" });
   }
 };
 
@@ -530,52 +515,47 @@ exports.relayVanneFroid40SecondesOn = (req, res, next) => {
 //? Gestion des boutons SEC et HUM.
 
 exports.fermetureVanneSwitch = (req, res) => {
-
-  let gpioPin = req.body.pin; 
+  let gpioPin = req.body.pin;
   // console.log("gpioPin ==>",gpioPin);
- 
-  const { exec } = require('child_process');
 
-  exec(`python3 /home/pi/Desktop/champiBack_V3/python/gpioOn.py ${gpioPin}`, (error, stdout, stderr) => {
+  const { exec } = require("child_process");
 
+  exec(
+    `python3 /home/pi/Desktop/champiBack_V3/python/gpioOn.py ${gpioPin}`,
+    (error, stdout, stderr) => {
       if (error) {
-          console.error(`Error executing script: ${error}`);
-          return;
-      };
+        console.error(`Error executing script: ${error}`);
+        return;
+      }
 
       if (stderr) {
         //  console.error(`Error output: ${stderr}`);
-          return;
-      };
+        return;
+      }
 
       console.log(`Script output: ${stdout}`);
-      
-  });
+    }
+  );
 
   setTimeout(() => {
-    exec(`python3 /home/pi/Desktop/champiBack_V3/python/gpioOff.py ${gpioPin}`, (error, stdout, stderr) => {
-
-      if (error) {
+    exec(
+      `python3 /home/pi/Desktop/champiBack_V3/python/gpioOff.py ${gpioPin}`,
+      (error, stdout, stderr) => {
+        if (error) {
           console.error(`Error executing script: ${error}`);
           return;
-      };
+        }
 
-      if (stderr) {
-        //  console.error(`Error output: ${stderr}`);
+        if (stderr) {
+          //  console.error(`Error output: ${stderr}`);
           return;
-      };
+        }
 
-      console.log(`Script output: ${stdout}`);
-      
-      res.status(200).json({ message: 'GPIO OFF' });
-  });
-    
+        console.log(`Script output: ${stdout}`);
+      }
+    );
+    res.status(200).json({ message: "GPIO OFF" });
   }, 40000);
-  
-}
+};
 
 //? -------------------------------------------------
-
-
-
-

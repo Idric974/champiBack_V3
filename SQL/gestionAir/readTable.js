@@ -3,7 +3,7 @@ const mysql = require("mysql");
 
 //* Les tables.
 
-// const tableName = "gestion_airs";
+const tableName = "gestion_airs";
 // let tableName = "gestion_airs_datas";
 // let tableName = "gestion_airs_etalonnages";
 //let tableName = "gestion_airs_etat_relays";
