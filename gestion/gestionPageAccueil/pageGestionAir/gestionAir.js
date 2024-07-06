@@ -8,6 +8,10 @@ showDate();
 showTime();
 switchValve();
 
+showDate();
+showTime();
+switchValve();
+
 //? Récupération de la tempèrature Air dans la base.
 
 //* Température Air.
@@ -16,7 +20,6 @@ let temperatureAir;
 let temperatureAirLocalStorage;
 
 //* Consigne Air.
-
 
 let deltaAirLocalStorage;
 

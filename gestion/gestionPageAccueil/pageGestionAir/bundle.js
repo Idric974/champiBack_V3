@@ -1,4 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const numSalle = 5;
+module.exports = numSalle;
+},{}],2:[function(require,module,exports){
 //? Afficher la date.
 
 const showDate=()=>{  
@@ -137,7 +140,7 @@ const saveVanneActive =()=>{
 //? Fermeture de la vanne lors du switch.
 
 const gpioAction = (action, pin) => {
-console.log('action + pin ==> ',action, pin);
+// console.log('action + pin ==> ',action, pin);
 
 
   fetch('http://localhost:3003/api/relayRoutes/fermetureVanneSwitch/', {
@@ -160,72 +163,65 @@ console.log('action + pin ==> ',action, pin);
 
 //? Envoyer un SMS d’alerte.
 
+const numSalle = require('../../configNumSalle');
+
 const sendSMS = (temperatureDuMessage) => {
 
   console.log('temperatureDuMessage :', temperatureDuMessage);
 
   //! Url de la master.
-
   const url = 'http://192.168.1.10:5000/api/postSms/postSms';
 
   let date1 = new Date();
 
   let dateLocale = date1.toLocaleString('fr-FR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
   });
 
   let message = `ALERTE : Salle ${numSalle} | ${temperatureDuMessage} | ${dateLocale}`;
 
-  axios
-      .post(url, {
-          message,
-      })
-      .then(function (response) {
-          console.log('Reponse de SMS808 : ', response.data);
-
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Reponse de SMS808 : ', data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
+
 
 //? --------------------------------------------------
 
 //? Mise à jour de l'état des relay.
 
-let etatRelay;
-
-let miseAjourEtatRelay = () => {
-    let lastId;
-    gestionAirModels
-        .findOne({
-            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
-            raw: true,
-        })
-        .then((id) => {
-            // console.log('Le dernier id de gestionAir est : ', id);
-            // console.log(id.maxid);
-            lastId = id.maxid;
-
-            gestionAirModels
-                .update(
-                    { actionRelay: actionRelay, etatRelay: etatRelay },
-                    { where: { id: lastId } }
-                )
-
-                .then(function (result) {
-                    // console.log('Nb mise à jour data =======> ' + result);
-                })
-
-                .catch((err) => console.log(err));
-        });
+let miseAjourEtatRelay = (etatRelay) => {
+  fetch('http://localhost:3003/api/functionsRoutes/majEtatRelay', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ etatRelay })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 };
 
 //? --------------------------------------------------
@@ -236,13 +232,18 @@ module.exports = {
   switchValve,
   sendSMS,
   miseAjourEtatRelay,
+  gpioAction
 }
-},{}],2:[function(require,module,exports){
+},{"../../configNumSalle":1}],3:[function(require,module,exports){
 const { 
         showDate,
         showTime,
         switchValve,
       }= require('../../functions/myfunctions')
+
+showDate();
+showTime();
+switchValve();
 
 showDate();
 showTime();
@@ -256,7 +257,6 @@ let temperatureAir;
 let temperatureAirLocalStorage;
 
 //* Consigne Air.
-
 
 let deltaAirLocalStorage;
 
@@ -592,4 +592,4 @@ document
 //? -------------------------------------------------
 
 
-},{"../../functions/myfunctions":1}]},{},[2]);
+},{"../../functions/myfunctions":2}]},{},[3]);

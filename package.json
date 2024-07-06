@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "concurrently -n ' Serveur Back , Cron Tab     ' -c 'green' \" nodemon server.js\" \" node /home/pi/Desktop/champiBack_V3/cronTab.js\"   ",
-     "dev": "nodemon server.js",
+    "dev": "nodemon server.js",
     "✔️_sandBox": " node /home/pi/Desktop/champiBack_V3/gestion/outils/sandBox.js",
     "✔️_gestionAir": " node /home/pi/Desktop/champiBack_V3/gestion/gestionAir/gestionAir.js",
     "✔️_gestionHum": " node /home/pi/Desktop/champiBack_V3/gestion/gestionHum/gestionHum.js",
