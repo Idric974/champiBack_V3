@@ -32,25 +32,12 @@ const recuperationDeLaVanneActive = () => {
               
                 if (vanneActive === "vanneHum") {
 
-                    gpioAction('out','24')
-                
-                    setTimeout(() => {
-                    gpioAction('in','24')
-                  
-                    }, 40000);
-
                     ouvertureVanne = '23';
                     fermetureVanne = '22';
                     console.log("✅ SUCCÈS ==> gestions Air ==>", vanneActive);
                     resolve({ ouvertureVanne, fermetureVanne });
 
                 } else if (vanneActive === "vanneSec") {
-
-                    gpioAction('out','22');
-                  
-                    setTimeout(() => {
-                    gpioAction('in','22')
-                    }, 40000);
 
                     ouvertureVanne = '25';
                     fermetureVanne = '24';
