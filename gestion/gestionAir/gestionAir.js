@@ -520,7 +520,7 @@ let definitionDesActions = () => {
 
       if (delta >= 3) {
         console.log(
-          "✅ SUCCÈS | Gestions Air | 🔺 ALERTE, le delta est supérieur à 3°C"
+          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est supérieur à 3°C"
         );
 
         // sendSMS("Attention : le delta est supérieur à 3°C");
@@ -781,7 +781,7 @@ let definitionDesActions = () => {
         //
       } else if (delta <= -3) {
         console.log(
-          "✅ SUCCÈS | Gestions Air | 🔺 ALERTE, le delta est supérieur à -3°C"
+          "✅ SUCCÈS | Gestions Air | ALERTE, le delta est supérieur à -3°C"
         );
 
         // sendSMS("Attention : le delta est inférieur à -3°C");
@@ -806,7 +806,7 @@ let definitionDesActions = () => {
           gpioAction("in", fermetureVanne);
           miseAjourEtatRelay(etatRelay, (actionRelay = 0));
           resolve(etatRelay, (actionRelay = 0));
-        }, duree15Seconde);
+        }, 15000);
 
         //? -----------------------------------------------
         //

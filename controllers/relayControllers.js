@@ -516,7 +516,9 @@ exports.relayVanneFroid40SecondesOn = (req, res, next) => {
 
 exports.fermetureVanneSwitch = (req, res) => {
   let gpioPin = req.body.pin;
-  // console.log("gpioPin ==>",gpioPin);
+  // console.log("gpioPin ==>", gpioPin);
+  let action = req.body.action;
+  // console.log("action ==>", action);
 
   const { exec } = require("child_process");
 
@@ -552,10 +554,11 @@ exports.fermetureVanneSwitch = (req, res) => {
         }
 
         console.log(`Script output: ${stdout}`);
+
+        res.status(200).json({ message: "GPIO OFF" });
       }
     );
-    res.status(200).json({ message: "GPIO OFF" });
-  }, 40000);
+  }, action);
 };
 
 //? -------------------------------------------------

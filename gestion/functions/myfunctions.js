@@ -145,7 +145,7 @@ const gpioAction = (action, pin) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      console.log("🖐 gpioAction ==>", data);
     })
     .catch((error) => {
       console.error("🔴 Error | Functions | gpioAction : ", error);
